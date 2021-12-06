@@ -1,0 +1,18 @@
+
+.container{
+  height: 100vh;
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+
+}
+.form_container{
+  width: 400px;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 36px 48px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

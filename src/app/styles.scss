@@ -1,0 +1,53 @@
+// Themes
+$white: #fff;
+$purple_light: #f2f0f4;
+$purple_outline: #e7e0eb;
+$purple_dark: #6a5676;
+$auth_dark: #0e1b21;
+
+
+@use 'src/app/styles' as *;
+
+//// Container templates
+//@mixin full-container-template {
+//  width: 100%;
+//  height: 100%;
+//
+//  background: $white;
+//  border: 1px solid $purple_outline;
+//  border-radius: 8px;
+//}
+//
+//// Text templates
+//@mixin title-text {
+//  color: $purple_dark;
+//  margin-top: 20px;
+//  margin-left: 24px;
+//  font-weight: normal;
+//  font-size: 15px;
+//  line-height: 140%;
+//}
+//
+//// Register
+//@mixin auth-error-text {
+//  font-style: normal;
+//  font-weight: normal;
+//  font-size: 14px;
+//  line-height: 120%;
+//  text-align: center;
+//  color: #ff2222;
+//}
+//
+//@mixin auth-input {
+//  border: 1px solid #ced5da;
+//  background: white;
+//  border-radius: 6px;
+//  padding: 9px 12px;
+//  font-size: 15px;
+//  line-height: 17px;
+//  width: 100%;
+//  color: black;
+//  &::placeholder{
+//    color:  #999999;;
+//  }
+//}

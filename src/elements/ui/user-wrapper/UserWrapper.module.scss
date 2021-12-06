@@ -1,0 +1,24 @@
+
+.background {
+  padding-top: 40px;
+  background: var(--main-background);
+  min-height: 100vh;
+}
+
+.logo{
+  margin-bottom: 16px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.navbar{
+  width: 20%;
+}
+
+.main_container {
+  width: 78%;
+}

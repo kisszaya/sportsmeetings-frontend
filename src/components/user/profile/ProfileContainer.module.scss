@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.left_section {
+  width: 30%;
+  margin-right: 24px;
+}
+
+.info_container {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 32px 24px 32px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.photo {
+  margin-bottom: 20px;
+  img {
+    border: 1px solid var(--auth-input-border);
+    width: 136px;
+    height: 136px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.username {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 125%;
+
+  text-align: center;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 125%;
+
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.buttons_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.telegram_button {
+  width: 60%;
+  margin-right: 6px;
+  border-radius: 8px;
+  border: none;
+  color: var(--white);
+  background: var(--telegram-gradient);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 121%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  justify-content: space-around;
+}
+
+.telegramSVG {
+  margin-right: 4px;
+}
+
+.edit_profile_button {
+  width: 40%;
+  background: var(--primary-blue);
+  color: var(--secondary-dark-blue);
+  border: none;
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  transition: 0.2s;
+
+  &:hover {
+    background: var(--primary-blue-hover);
+  }
+}
+
+.right_section {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.nav {
+  margin-bottom: 16px;
+  a {
+    color: var(--primaty_dark_blue);
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 140%;
+
+    text-align: center;
+    margin-right: 32px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.child {
+  width: 100%;
+}

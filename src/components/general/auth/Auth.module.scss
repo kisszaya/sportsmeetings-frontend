@@ -1,0 +1,39 @@
+.container {
+  padding-top: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.landing {
+}
+
+.logoSVG {
+  margin-bottom: 36px;
+}
+
+.app_description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 135%;
+  color: var(--white);
+  width: 200px;
+  letter-spacing: 0.04em;
+}
+
+.and {
+  color: var(--auth-blue);
+  font-weight: bold;
+}
+
+.form_container {
+  background: var(--white);
+  width: 340px;
+  border-radius: 12px;
+  padding: 36px 32px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

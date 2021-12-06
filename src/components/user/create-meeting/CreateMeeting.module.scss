@@ -1,0 +1,52 @@
+.title {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 140%;
+  margin-bottom: 18px;
+  color: var(--black);
+}
+
+.form_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 125%;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.time_container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.error_messages {
+  margin-top: 32px;
+  margin-bottom: 6px;
+  position: relative;
+  p {
+    color: var(--error);
+    font-size: 14px;
+    margin-bottom: 2px;
+    text-align: left;
+  }
+}
+
+.error_messages:before {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  width: 100%;
+  content: "";
+  height: 1px;
+  background: var(--auth-input-border);
+}
+
+.button_container {
+  width: 200px;
+}

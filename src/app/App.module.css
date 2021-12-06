@@ -1,0 +1,115 @@
+@font-face {
+  font-weight: bold;
+  font-family: "Open Sans";
+  font-style: normal;
+  src: url("./fonts/OpenSans-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-weight: 800;
+  font-family: "Open Sans";
+  font-style: normal;
+  src: url("./fonts/OpenSans-ExtraBold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-weight: 600;
+  font-family: "Open Sans";
+  font-style: normal;
+  src: url("./fonts/OpenSans-SemiBold.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-weight: normal;
+  font-family: "Open Sans";
+  font-style: normal;
+  src: url("./fonts/OpenSans-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-weight: 300;
+  font-family: "Open Sans";
+  font-style: normal;
+  src: url("./fonts/OpenSans-Light.ttf") format("truetype");
+  font-display: swap;
+}
+* {
+  box-sizing: border-box;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+form {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+a,
+button,
+div,
+input,
+label,
+select,
+span,
+strong,
+textarea {
+  font-family: "Open Sans", sans-serif;
+  outline: 0;
+  text-decoration: none;
+}
+
+input,
+textarea,
+*[contenteditable] {
+  cursor: text;
+}
+
+head {
+  position: relative;
+  z-index: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.root {
+  position: relative;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  max-width: 100vw;
+}
+
+:root {
+  font-family: "Open Sans", sans-serif;
+  --vine: #400000;
+  --black: #000;
+  --white: #fff;
+  --pink: #F1D8D8;
+  --hoveredPink: #EFD2D2;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/*# sourceMappingURL=App.module.css.map */

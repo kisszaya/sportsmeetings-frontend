@@ -1,0 +1,28 @@
+.label {
+  width: 100%;
+
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  input {
+    width: 100%;
+    border-radius: 6px;
+    border: 2px solid var(--auth-input-border);
+    background: var(--auth-input);
+    padding: 10px 16px;
+    font-style: normal;
+    font-weight: normal;
+    color: var(--black);
+    font-size: 16px;
+  }
+  input:focus {
+    border: 2px solid var(--auth-input-border-focus);
+  }
+  input::placeholder {
+    font-style: normal;
+    font-weight: normal;
+    color: var(--auth-input-text);
+    font-size: 16px;
+  }
+}

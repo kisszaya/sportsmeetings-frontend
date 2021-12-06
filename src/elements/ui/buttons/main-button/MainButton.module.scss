@@ -1,0 +1,38 @@
+.container {
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: normal;
+
+  line-height: 20px;
+  width: 100%;
+  min-width: 200px;
+  text-align: center;
+  background: var(--dark-green);
+  transition: 0.2s;
+}
+
+.medium {
+  font-size: 15px;
+  padding-top: 12px;
+  padding-bottom: 13px;
+}
+
+.large {
+  font-size: 17px;
+  padding-top: 14px;
+  padding-bottom: 15px;
+}
+
+.container:hover {
+  background: var(--auth-dark);
+}
+
+.container:disabled {
+  cursor: default;
+  background: var(--auth-input-border-focus);
+}
+
+//.green {
+//  background: var(--auth-dark-green);
+//}

@@ -1,0 +1,15 @@
+.field input {
+  border: 1px solid #ced5da;
+  background: white;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 15px;
+  line-height: 17px;
+  width: 100%;
+  color: black;
+}
+.field input::placeholder {
+  color: #999999;
+}
+
+/*# sourceMappingURL=EditField.module.css.map */

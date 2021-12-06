@@ -1,0 +1,49 @@
+
+.container {
+  height: 280px;
+  width: 460px;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px 40px;
+}
+
+.title{
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 125%;
+  color: var(--telegram-text);
+  width: 70%;
+  margin-bottom: 20px;
+}
+
+.lint_text{
+  font-weight: normal;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 140%;
+  margin-bottom: 1px;
+}
+
+.type_text{
+  font-weight: normal;
+  margin-top: 14px;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 140%;
+  margin-bottom: 1px;
+}
+
+.href{
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 130%;
+  color: var(--telegram-text);
+  text-decoration: underline;
+}
+
+.code{
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 130%;
+  color: var(--telegram-text);
+}

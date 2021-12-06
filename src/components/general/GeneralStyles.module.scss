@@ -1,0 +1,38 @@
+.form_title {
+  margin-bottom: 24px;
+  color: var(--black);
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+}
+
+.error_messages {
+  margin-bottom: 6px;
+  p {
+    color: var(--error);
+    font-size: 14px;
+    margin-bottom: 2px;
+    text-align: center;
+  }
+}
+
+.button_container {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.change_page {
+  transition: 0.2s;
+  a {
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 17px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--primaty_dark_blue);
+  }
+}
+.change_page:hover > a {
+  text-decoration-line: underline;
+}

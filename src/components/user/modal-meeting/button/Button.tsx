@@ -1,0 +1,44 @@
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { NavLink } from "react-router-dom";
+
+export const Button = (props: {
+  participants: number[];
+  creatorId: number;
+  meetingId: number;
+  setComment: (value: boolean) => void;
+  comment: boolean;
+}) => {
+  const { data: myInfo } = useSelector((state: RootState) => state.profile.myInfo);
+  const { status, error } = useSelector(
+    (state: RootState) => state.meetingRequests
+  );
+
+  // Creator
+  if (myInfo && myInfo.id === props.creatorId)
+    return (
+      <NavLink to={`/meetings/created/${props.meetingId}`}>
+        <div>Ваша встреча</div>
+      </NavLink>
+    );
+  // Participant
+  else if (myInfo && props.participants.includes(myInfo.id))
+    return <div>Вы участник</div>;
+  // Other
+  else {
+    console.log("status", status);
+    return (
+      <>
+        {status === "idle" && props.comment && (
+          <button type="submit">Записаться</button>
+        )}
+        {status === "idle" && !props.comment && (
+          <button onClick={() => props.setComment(true)}>Записаться</button>
+        )}
+        {status === "loading" && <button disabled>Загрузка</button>}
+        {status === "resolved" && <button disabled>Вы записаны</button>}
+        {status === "rejected" && <button disabled>{error}</button>}
+      </>
+    );
+  }
+}

@@ -1,0 +1,20 @@
+.background {
+  height: 100vh;
+  background: #400000;
+  position: relative;
+}
+
+.form {
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  padding: 40px 64px;
+  transform: translate(-50%, -50%);
+  border-radius: 20px;
+  min-height: 488px;
+  width: 440px;
+}
+
+/*# sourceMappingURL=UserWrapper.module.css.map */

@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  background: var(--edit-button-background);
+  padding: 12px 16px;
+  width: 250px;
+  margin-bottom: 4px;
+  position: relative;
+  border-radius: 6px;
+  border: none;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+  p {
+    color: var(--auth-input-text);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 17px;
+  }
+
+  .arrowSVG {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    right: 16px;
+    transition: 0.2s;
+
+    & > svg > path {
+      &:global(.line) {
+        transition: 0.2s;
+        stroke: transparent;
+      }
+    }
+  }
+}
+
+.container:hover {
+  .arrowSVG {
+    right: 12px;
+
+    & > svg > path {
+      &:global(.line) {
+        stroke: #8e9ea4;
+      }
+    }
+  }
+}

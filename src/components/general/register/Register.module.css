@@ -1,0 +1,60 @@
+.container {
+  position: relative;
+  height: inherit;
+}
+
+.logoSVG {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 32px;
+}
+
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field input {
+  border: 1px solid #ced5da;
+  background: white;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 15px;
+  line-height: 17px;
+  width: 100%;
+  color: black;
+}
+.field input::placeholder {
+  color: #999999;
+}
+
+.errorMessagesContainer p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 120%;
+  text-align: center;
+  color: #ff2222;
+}
+
+.buttonContainer {
+  position: absolute;
+  width: 100%;
+  top: 280px;
+}
+
+.changeInput {
+  padding-top: 16px;
+  text-align: center;
+}
+.changeInput a {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 135%;
+  color: var(--vine);
+}
+
+/*# sourceMappingURL=Register.module.css.map */
