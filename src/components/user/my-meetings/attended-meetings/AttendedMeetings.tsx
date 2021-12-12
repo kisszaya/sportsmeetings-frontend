@@ -4,17 +4,17 @@ import { useEffect, useState } from "react";
 import { getMyAttendedMeetings } from "store/meetingsSlice";
 import { RootState } from "store";
 import { MeetingItem } from "../meeting-item/MeetingItem";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Paginator } from "elements/service";
+
+import styles from "../MyMeetings.module.scss";
+
+import { ReactComponent as ArrowSVG } from "../media/arrow.svg";
+import { Loading } from "components/general";
 
 const AttendedMeetings = () => {
   // Current page state
   const [currentPage, setCurrentPage] = useState(0);
-
-  // Navigate to previous page
-  const navigate = useNavigate();
-  const location = useLocation();
-  const fromPage = location.state?.from?.pathname || "/";
 
   // Redux
   const dispatch = useDispatch();
@@ -27,35 +27,45 @@ const AttendedMeetings = () => {
       })
     );
   }, [currentPage]);
-  const { data } = useSelector(
-    (state: RootState) => state.meetings.myAttendedMeetings.createdData
+  const { createdData, error, status } = useSelector(
+    (state: RootState) => state.meetings.myAttendedMeetings
   );
-  if (!data) return <p>Loading</p>;
+  if (!createdData.data || status === "loading") return <Loading />;
+  if (error) return <p>{error}</p>;
 
   return (
     <UserWrapper>
-      <>
-        <div>
-          <div onClick={() => navigate(fromPage, { replace: true })}>arrow</div>
-          <h4>Предстоящие встречи</h4>
-        </div>
-        <NavLink to="/meetings/attended/finished">
-          Открыть завершенные встречи
-        </NavLink>
-        <div>
-          {data &&
-            data.meetings.map((meeting) => (
+      <div className={styles.container}>
+        <section className={styles.top_section}>
+          <div className={styles.title_container}>
+            <NavLink to="/profile/events" className={styles.arrowSVG}>
+              <ArrowSVG />
+            </NavLink>
+            <h4 className={styles.title}>Предстоящие встречи</h4>
+          </div>
+          <NavLink
+            to="/meetings/attended/finished"
+            className={styles.finished_meetings_link}
+          >
+            Открыть завершенные встречи
+          </NavLink>
+        </section>
+        <section className={styles.data_section}>
+          {createdData.data &&
+            createdData.data.meetings.map((meeting) => (
               <MeetingItem meeting={meeting} status="CREATED" isMine={false} />
             ))}
-        </div>
-        <div>
-          <Paginator
-            setCurrentPage={setCurrentPage}
-            totalPage={data.totalPage}
-            currentPage={currentPage}
-          />
-        </div>
-      </>
+        </section>
+        {createdData.data.totalPage !== 1 && (
+            <section className={styles.paginator}>
+              <Paginator
+                  setCurrentPage={setCurrentPage}
+                  totalPage={createdData.data.totalPage}
+                  currentPage={currentPage}
+              />
+            </section>
+        )}
+      </div>
     </UserWrapper>
   );
 };

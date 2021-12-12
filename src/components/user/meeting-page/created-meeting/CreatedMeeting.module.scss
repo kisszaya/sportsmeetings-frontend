@@ -1,0 +1,75 @@
+.request_item {
+  width: 100%;
+  background: var(--request);
+  border: 1px solid var(--request-border);
+  position: relative;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.request_username {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--black);
+}
+
+.request_description {
+  margin-top: 4px;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 125%;
+  color: var(--primaty_dark_blue);
+  width: 80%;
+}
+
+.buttons_container {
+  position: absolute;
+  background: var(--white);
+  padding: 8px 18px 6px 18px;
+  top: 8px;
+  border-radius: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: row;
+}
+
+.accept_button {
+  svg {
+    cursor: pointer;
+  }
+  margin-right: 12px;
+}
+.reject_button {
+  svg {
+    cursor: pointer;
+  }
+}
+
+.participant_item {
+  width: 100%;
+  background: var(--request);
+  border: 1px solid var(--request-border);
+  position: relative;
+  padding: 8px 20px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.participant_username {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--black);
+}
+
+.delete_participant_button {
+  svg {
+    cursor: pointer;
+  }
+}

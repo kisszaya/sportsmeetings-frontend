@@ -6,7 +6,14 @@ import { deleteComment, getComments, userInfo } from "store/ProfileSlice";
 import { useContext, useEffect } from "react";
 import { PopupContext } from "elements/service";
 import { CreateComment } from "./create-comment/CreateComment";
-import { GetUsernameById } from "../../../utils/MeetingsFunctions";
+import {
+  GetPhotoByUserId,
+  GetUsernameById,
+} from "../../../utils/MeetingsFunctions";
+
+import styles from "./UserProfile.module.scss";
+
+import { ReactComponent as DeleteSVG } from "./media/delete.svg";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -24,7 +31,9 @@ const UserProfile = () => {
 
   const { usersInfo } = useSelector((state: RootState) => state.profile);
   if (!usersInfo.find((user) => user.id === userId)) dispatch(userInfo(userId));
-  const { data: myInfo } = useSelector((state: RootState) => state.profile.myInfo);
+  const { data: myInfo } = useSelector(
+    (state: RootState) => state.profile.myInfo
+  );
 
   const userData = usersInfo.find((user) => user.id === userId);
   if (!userData) return <p>Loading...</p>;
@@ -36,48 +45,62 @@ const UserProfile = () => {
 
   return (
     <UserWrapper>
-      <>
-        <section>
-          <p>{userData.username}</p>
-          <p>{`${userData.firstName} ${userData.lastName}`}</p>
+      <div className={styles.container}>
+        <section className={styles.left_section}>
+          <div className={styles.photo}>
+            <GetPhotoByUserId userId={userData.id} />
+          </div>
+          <p className={styles.username}>{userData.username}</p>
+          <p
+            className={styles.name}
+          >{`${userData.firstName} ${userData.lastName}`}</p>
         </section>
-        <section>
-          <button onClick={() => setPopup(<CreateComment userId={userId} />)}>
-            Оставить комментарий
-          </button>
-          <div>
+        <section className={styles.right_section}>
+          <div className={styles.title_container}>
+            <h5 className={styles.title}>Комментарии о пользователе</h5>
+            <button
+              onClick={() => setPopup(<CreateComment userId={userId} />)}
+              className={styles.leave_comment_button}
+            >
+              Оставить комментарий
+            </button>
+          </div>
+          <div className={styles.comments_container}>
             {commentsData?.comments.length === 0 ? (
               <p>Пока что нет комментариев</p>
             ) : (
               commentsData?.comments.map((comment) => (
-                <>
+                <div className={styles.comment_container}>
+                  <NavLink
+                    to={
+                      comment.authorId === myInfo?.id
+                        ? `/profile/events`
+                        : `/user/${comment.authorId}`
+                    }
+                    className={styles.comment_user_info}
+                  >
+                    <div className={styles.comment_photo}>
+                      <GetPhotoByUserId userId={comment.authorId} />
+                    </div>
+                    <p className={styles.comment_username}>
+                      <GetUsernameById userId={comment.authorId} />
+                    </p>
+                  </NavLink>
+                  <p className={styles.comment_text}>{comment.text}</p>
                   {comment.authorId === myInfo?.id && (
-                    <div>
-                      <NavLink to={`/profile/events`}>
-                        <GetUsernameById userId={comment.authorId} />
-                      </NavLink>
-                      <p>{comment.text}</p>
-                      <button
-                        onClick={() => onDeleteComment(comment.id, userData.id)}
-                      >
-                        Удалить
-                      </button>
+                    <div
+                      onClick={() => onDeleteComment(comment.id, userData.id)}
+                      className={styles.comment_delete_button}
+                    >
+                      <DeleteSVG />
                     </div>
                   )}
-                  {comment.authorId !== myInfo?.id && (
-                    <div>
-                      <NavLink to={`/user/${comment.authorId}`}>
-                        <GetUsernameById userId={comment.authorId} />
-                      </NavLink>
-                      <p>{comment.text}</p>
-                    </div>
-                  )}
-                </>
+                </div>
               ))
             )}
           </div>
         </section>
-      </>
+      </div>
     </UserWrapper>
   );
 };

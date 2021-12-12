@@ -41,18 +41,6 @@
 
   scrollbar-width: thin;
 
-  & > svg {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    z-index: 1;
-
-    cursor: pointer;
-
-    &:hover {
-      animation: rotate 0.3s forwards;
-    }
-  }
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -66,23 +54,11 @@
     border-radius: 5px;
   }
 }
+.crossSVG {
+  position: absolute;
+  top: 15px;
+  right: 24px;
+  z-index: 1;
 
-@media screen and (max-width: 767px) {
-  .cardBox {
-    width: 430px;
-
-    & > svg {
-      top: 20px;
-      right: 20px;
-
-      width: 32px;
-      height: 32px;
-    }
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .cardBox {
-    width: calc(100% - 32px);
-  }
+  cursor: pointer;
 }

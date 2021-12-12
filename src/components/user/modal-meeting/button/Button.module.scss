@@ -1,0 +1,35 @@
+.container {
+  padding: 10px 24px;
+
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+
+  border-radius: 8px;
+}
+
+.loading {
+  color: var(--black);
+
+  background: var(--request-border);
+}
+
+.idle {
+  color: var(--white);
+
+  background: var(--dark-green);
+  border: none;
+}
+
+.resolved {
+  color: var(--black);
+
+  background: var(--primary-blue);
+}
+
+.rejected {
+  color: var(--error);
+
+  background: var(--request-border);
+}

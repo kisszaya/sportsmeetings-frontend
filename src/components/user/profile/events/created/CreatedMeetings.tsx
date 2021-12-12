@@ -6,6 +6,8 @@ import { MeetingItem } from "../meeting-item/MeetingItem";
 import { Loading } from "components/general";
 import { NavLink } from "react-router-dom";
 
+import styles from "../Events.module.scss";
+
 export const CreatedMeetings = () => {
   const dispatch = useDispatch();
   const { createdData, finishedData, error, status } = useSelector(
@@ -42,9 +44,11 @@ export const CreatedMeetings = () => {
 
   const createdLength = createdData.data?.meetings.length;
   const finishedLength = finishedData.data?.meetings.length;
+  console.log('createdLength',createdLength)
+  console.log('finishedLength',finishedLength)
   return (
     <>
-      <div>
+      <div className={styles.items_container}>
         {createdData.data?.meetings.slice(0, 4).map((meeting) => (
           <MeetingItem meeting={meeting} status="CREATED" isMine={true} />
         ))}
@@ -57,7 +61,11 @@ export const CreatedMeetings = () => {
       </div>
       {(createdLength ? createdLength : 0) +
         (finishedLength ? finishedLength : 0) >
-        4 && <NavLink to="/meetings/created">Открыть все встречи</NavLink>}
+        4 && (
+        <NavLink to="/meetings/created" className={styles.open_meetings_link}>
+          Открыть все встречи
+        </NavLink>
+      )}
     </>
   );
 };

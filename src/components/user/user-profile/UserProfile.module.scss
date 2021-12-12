@@ -1,0 +1,156 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.left_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  margin-right: 24px;
+  margin-bottom: 6px;
+  padding: 32px 32px 24px 32px;
+
+  background: var(--white);
+  border-radius: 8px;
+}
+
+.photo {
+  margin-bottom: 20px;
+  img {
+    width: 136px;
+    height: 136px;
+    object-fit: cover;
+
+    border: 1px solid var(--auth-input-border);
+    border-radius: 50%;
+  }
+}
+
+.username {
+  margin-bottom: 6px;
+
+  color: var(--black);
+  font-weight: 500;
+  font-size: 17px;
+  font-style: normal;
+  line-height: 125%;
+
+  text-align: center;
+}
+
+.name {
+  margin-bottom: 2px;
+
+  font-weight: normal;
+  font-size: 14px;
+  font-style: normal;
+  width: 100%;
+  line-height: 125%;
+
+  text-align: center;
+}
+
+.right_section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.title {
+  margin-bottom: 8px;
+
+  color: var(--auth-input-text);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 125%;
+}
+
+.leave_comment_button {
+  padding: 9px 14px 10px 14px;
+
+  color: var(--secondary-dark-blue);
+  font-weight: normal;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 16px;
+  text-align: center;
+
+  background: var(--primary-blue);
+  border: none;
+  border-radius: 8px;
+
+  transition: 0.2s;
+
+  &:hover {
+    background: var(--primary-blue-hover);
+  }
+}
+
+.comments_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment_container {
+  position: relative;
+
+  padding: 20px 32px 24px 32px;
+
+  background: var(--white);
+  border: 1px solid var(--navlink-background);
+  border-radius: 5px;
+  margin-bottom: 4px;
+}
+.comment_user_info {
+  display: flex;
+  width: 60%;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.comment_photo {
+  margin-right: 12px;
+  img {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+
+    border: 1px solid var(--auth-input-border);
+    border-radius: 50%;
+  }
+}
+
+.comment_username {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--black);
+}
+
+.comment_text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 140%;
+  color: var(--fifth_dark_blue);
+}
+
+.comment_delete_button {
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
+  right: 20px;
+}

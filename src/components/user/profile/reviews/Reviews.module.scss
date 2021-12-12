@@ -1,0 +1,57 @@
+.title {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 125%;
+  color: var(--auth-input-text);
+  margin-bottom: 8px;
+}
+.comments_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment_container {
+  position: relative;
+
+  padding: 20px 32px 24px 32px;
+
+  background: var(--white);
+  border: 1px solid var(--navlink-background);
+  border-radius: 5px;
+  margin-bottom: 4px;
+}
+.comment_user_info {
+  display: flex;
+  width: 60%;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.comment_photo {
+  margin-right: 12px;
+  img {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+
+    border: 1px solid var(--auth-input-border);
+    border-radius: 50%;
+  }
+}
+
+.comment_username {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--black);
+}
+
+.comment_text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 140%;
+  color: var(--fifth_dark_blue);
+}

@@ -32,9 +32,7 @@ export const login = createAsyncThunk<
 >(
   "auth/login",
   async function ({ password, username }, { rejectWithValue, dispatch }) {
-    console.log("in log");
     const response = await authAPI.login(password, username);
-    console.log("re", response.status);
     switch (response.status) {
       case 200: {
         localStorage.setItem(
@@ -43,6 +41,7 @@ export const login = createAsyncThunk<
         );
         await dispatch(setUserToken(response.data.token));
         await dispatch(myInfo());
+        await dispatch(allCategories());
         return;
       }
       case 400: {
@@ -100,6 +99,7 @@ export const register = createAsyncThunk<
         );
         await dispatch(setUserToken(response.data.token));
         await dispatch(myInfo());
+        await dispatch(allCategories());
         return;
       }
       case 400: {
@@ -127,6 +127,7 @@ export const unregister = createAsyncThunk<void, void>(
     localStorage.removeItem("x-auth-token");
     dispatch(setUserToken(null));
     dispatch(setMyInfo(null));
+    window.location.reload()
   }
 );
 

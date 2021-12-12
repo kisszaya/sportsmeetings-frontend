@@ -8,22 +8,37 @@ import {
   updateRequestStatus,
 } from "store/meetingRequestsSlice";
 
+import generalStyles from "../MeetingsPage.module.scss";
+import styles from "./CreatedMeeting.module.scss";
+import { NavLink } from "react-router-dom";
+
+import { ReactComponent as AcceptSVG } from "../media/accept.svg";
+import { ReactComponent as RejectSVG } from "../media/reject.svg";
+
 export const CreatedMeeting = (props: {
   participantsIds: number[];
   meetingId: number;
 }) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getRequestsByMeetingId(Number(props.meetingId)));
-  }, [dispatch, props.meetingId]);
-
   const { data: requestsData } = useSelector(
     (state: RootState) => state.meetings.myCreatedMeetings.requests
   );
-  const { data: myInfo } = useSelector((state: RootState) => state.profile.myInfo);
+  useEffect(() => {
+    if (!requestsData.find((meeting) => meeting.meetingId === props.meetingId))
+      dispatch(getRequestsByMeetingId(Number(props.meetingId)));
+  }, [dispatch, props.meetingId, requestsData]);
 
-  if (!requestsData) return <p>LoadingRequests</p>;
+  const { data: myInfo } = useSelector(
+    (state: RootState) => state.profile.myInfo
+  );
+
+  if (!requestsData.find((meeting) => meeting.meetingId === props.meetingId))
+    return <p>LoadingRequests</p>;
   if (!myInfo) return <p>LoadingMyInfo</p>;
+
+  const requests = requestsData.find(
+    (meeting) => meeting.meetingId === props.meetingId
+  );
 
   // Requests functions
   const onRequestButton = (
@@ -53,58 +68,78 @@ export const CreatedMeeting = (props: {
   };
 
   return (
-    <div>
-      <p>Заявки</p>
-      <div>
-        {requestsData.requests.length === 0
+    <>
+      <p className={generalStyles.title}>Заявки</p>
+      <div className={generalStyles.people_block}>
+        {requests!.data!.requests.length === 0
           ? "у вас нет заявок"
-          : requestsData.requests.map((request) => (
-              <div>
-                <p>
+          : requests!.data!.requests.map((request) => (
+              <div className={styles.request_item}>
+                <NavLink
+                  to={`/user/${request.userId}`}
+                  className={styles.request_username}
+                >
                   <GetUsernameById userId={request.userId} />
+                </NavLink>
+                <p className={styles.request_description}>
+                  {request.description}
                 </p>
-                <div>
-                  <button
+                <div className={styles.buttons_container}>
+                  <div
+                    className={styles.accept_button}
                     onClick={() =>
                       onRequestButton(props.meetingId, request.id, "ACCEPTED")
                     }
                   >
-                    Принять
-                  </button>
-                  <button
+                    <AcceptSVG />
+                  </div>
+                  <div
+                    className={styles.reject_button}
                     onClick={() =>
                       onRequestButton(props.meetingId, request.id, "DENIED")
                     }
                   >
-                    Отклонить
-                  </button>
+                    <RejectSVG />
+                  </div>
                 </div>
               </div>
             ))}
       </div>
-      <p>Участники</p>
-      <div>
+      <p className={generalStyles.title}>Участники</p>
+      <div className={generalStyles.people_block}>
         {props.participantsIds.length === 0
           ? "пока что нет участников"
           : props.participantsIds.map((participant) => (
-              <div>
-                <p>
-                  <GetUsernameById userId={participant} />
-                </p>
-                <div>
-                  {myInfo?.id !== participant && (
-                    <button
+              <>
+                {participant !== myInfo.id && (
+                  <div className={styles.participant_item}>
+                    <NavLink
+                      to={`/user/${participant}`}
+                      className={styles.participant_username}
+                    >
+                      <GetUsernameById userId={participant} />
+                    </NavLink>
+                    <div
+                      className={styles.delete_participant_button}
                       onClick={() =>
                         onDeleteParticipantButton(props.meetingId, participant)
                       }
                     >
-                      Удалить
-                    </button>
-                  )}
-                </div>
-              </div>
+                      <RejectSVG />
+                    </div>
+                  </div>
+                )}
+                {participant === myInfo.id && (
+                  <NavLink
+                    to="/profile/events"
+                    className={generalStyles.participant_item}
+                  >
+                    <GetUsernameById userId={participant} />
+                  </NavLink>
+                )}
+              </>
             ))}
       </div>
-    </div>
+    </>
   );
 };

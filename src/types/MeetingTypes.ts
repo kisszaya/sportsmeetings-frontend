@@ -1,25 +1,3 @@
-// export type CreateMeetingType = {
-//     category: string,
-//     description: string,
-//     latitude: number | null,
-//     longitude: number | null,
-//     endDate: {
-//         dayOfMonth: number | null,
-//         hourOfDay: number | null,
-//         minute: number | null,
-//         month: number | null,
-//         timeZoneOffset: number | null,
-//     },
-//     startDate: {
-//         dayOfMonth: number | null,
-//         hourOfDay: number | null,
-//         minute: number | null,
-//         month: number | null,
-//         timeZoneOffset: number | null,
-//     },
-//     maxNumbOfParticipants: number | null,
-// };
-
 export type CoordinatesType = {
   lat: null | number;
   lng: null | number;
@@ -48,6 +26,7 @@ export type CreateMeetingType = {
 };
 
 export type CreateMeetingFormikType = {
+  coordinates: CoordinatesType;
   categoryId: null | number;
   description: null | string;
   dayOfMonth: null | number;

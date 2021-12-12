@@ -7,10 +7,12 @@ import {
   useRef,
 } from "react";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-
-import styles from "./Popup.module.scss";
 import { useDispatch } from "react-redux";
 import { setStatusRequests } from "store/meetingRequestsSlice";
+
+import styles from "./Popup.module.scss";
+
+import {ReactComponent as CrossSVG} from "./cross.svg";
 
 export const PopupContext = createContext<
   (popupElement: JSX.Element | null) => void
@@ -102,7 +104,9 @@ export const PopupProvider: FC = ({ children }) => {
             animate="visible"
             exit="hidden"
           >
-            <p onClick={closePopup}>Close</p>
+            <div onClick={closePopup} className={styles.crossSVG}>
+              <CrossSVG/>
+            </div>
             {currentPopup}
           </motion.div>
         </div>

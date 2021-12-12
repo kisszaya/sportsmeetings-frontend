@@ -1,0 +1,167 @@
+
+.container{
+  background: var(--white);
+  border-radius: 20px;
+  width: 500px;
+  min-height: 380px;
+  position: relative;
+  padding: 16px 28px 32px 28px;
+}
+
+.main_container{
+  margin-top: 32px;
+}
+
+.about_meeting_container{
+  display: flex;
+  flex-direction: row;
+
+}
+
+.info_container{
+  width: 66%;
+}
+
+.category{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.time{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 17px;
+  margin-bottom: 4px;
+  color: var(--primaty_dark_blue);
+
+}
+
+.address{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--primaty_dark_blue);
+  margin-bottom: 24px;
+}
+
+.user_container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
+  img {
+    border: 1px solid var(--auth-input-border);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.username{
+  margin-left: 8px;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 15px;
+  color: var(--black);
+
+  a{
+    color: var(--black);
+  }
+}
+
+.description{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 125%;
+  color: var(--black);
+}
+
+.meeting_numbers_container{
+  display: flex;
+  width: 33%;
+  flex-direction: column;
+
+  iframe {
+    border-radius: 12px;
+  }
+}
+
+.participants_container{
+  margin-top: 12px;
+  background: var(--some-blue);
+  border-radius: 12px;
+  padding: 10px 14px 16px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.participants_title{
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 120%;
+  color: var(--secondary-dark-blue);
+  margin-bottom: 6px;
+}
+
+.participants_number{
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 120%;
+  color: var(--black);
+}
+
+.comment_container{
+
+  display: flex;
+  flex-direction: column;
+
+  textarea {
+    width: 100%;
+    height: 180px;
+    border: 1px solid var(--auth-input-border-focus);
+    padding: 12px 16px;
+    color: var(--black);
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 135%;
+    border-radius: 6px;
+
+    &::placeholder{
+      color: var(--auth-input-border-focus);
+    }
+  }
+}
+
+.comment_title_container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.arrowSVG{
+  cursor: pointer;
+}
+
+.comment_title{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 135%;
+  color: var(--black);
+  margin-left: 10px;
+}
+
+.button_container{
+  position: absolute;
+  left: 28px;
+  bottom: 32px;
+}

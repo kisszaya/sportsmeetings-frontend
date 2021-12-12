@@ -5,6 +5,9 @@ import { userInfo } from "../store/ProfileSlice";
 import { getMeetingByIdType } from "../types/MeetingTypes";
 import { NavLink } from "react-router-dom";
 import DefaultPhotoPNG from "./media/defaultPhoto.png";
+import meetingsAPI from "../api/meetingsAPI";
+import { getRequestsByMeetingId } from "../store/meetingsSlice";
+import { Loading } from "../components/general";
 
 export const GetConvertedTime = (props: { text: string }) => {
   const elements = props.text.split(" / ");
@@ -28,13 +31,15 @@ export const getAddressFromLatLng = async (
   lat: number,
   lng: number
 ): Promise<string> => {
-  console.log("addd");
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBB8NX_l1PeFmiGqs8unnV88wjs_MW1J9k&language=ru`
   );
   if (response) {
     const result = await response.json();
-    return result.results[0].formatted_address;
+    if (result.results[0].address_components[0]?.short_name && result.results[0].address_components[1]?.short_name && result.results[0].address_components[2]?.short_name)
+    return `${result.results[0].address_components[0]?.short_name}, ${result.results[0].address_components[1]?.short_name}, ${result.results[0].address_components[2]?.short_name}`
+    else
+      return result.results[0].formatted_address
   } else {
     return "Нельзя определить геолокацию";
   }
@@ -42,7 +47,6 @@ export const getAddressFromLatLng = async (
 
 export const GetCategoryName = (props: { categoryId: number }) => {
   const { categories } = useSelector((state: RootState) => state.categories);
-  console.log("cat", categories);
   return (
     <>
       {
@@ -70,6 +74,34 @@ export const GetCreatorUsername = (props: { meeting: getMeetingByIdType }) => {
         <GetUsernameById userId={props.meeting.creatorId} />
       </NavLink>
     );
+};
+
+export const GetRequestsNumberByMeetingId = (props: { meetingId: number }) => {
+  const { data } = useSelector(
+    (state: RootState) => state.meetings.myCreatedMeetings.requests
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("inEff");
+    if (!data.find((meeting) => meeting.meetingId === props.meetingId))
+      dispatch(getRequestsByMeetingId(props.meetingId));
+  }, [props.meetingId, data]);
+  console.log("data", data);
+  const requests = data.find(
+    (meeting) => meeting.meetingId === props.meetingId
+  );
+  if (data && requests)
+    return (
+      <>
+        {requests?.data?.requests.length === 0 && <>Нет заявок</>}
+        {requests?.data!.requests.length > 0 && (
+          <>{`Заявок: ${requests?.data!.requests.length}`}</>
+        )}
+      </>
+    );
+  else {
+    return <Loading />;
+  }
 };
 
 export const GetPhotoByUserId = (props: { userId: number }) => {

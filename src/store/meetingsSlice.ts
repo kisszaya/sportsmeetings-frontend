@@ -34,7 +34,12 @@ interface Meetings {
     };
     requests: {
       status: "loading" | "idle" | "resolved" | "rejected";
-      data: getRequestsByMeetingIdType | null;
+      data:
+        | {
+            meetingId: number;
+            data: getRequestsByMeetingIdType | null;
+          }[]
+        | [];
       error: string | undefined | null;
       currentPage: number;
     };
@@ -51,7 +56,11 @@ interface Meetings {
       data: getAllMeetingsType | null;
     };
   };
-  meetingById: getMeetingByIdType | null;
+  meetingById: {
+    status: "loading" | "idle" | "resolved" | "rejected";
+    error: string | undefined | null;
+    data: getMeetingByIdType | null;
+  };
 }
 
 // Errors interface
@@ -71,7 +80,13 @@ export const createNewMeeting = createAsyncThunk<
     const token = state.auth.userToken;
     const response = await meetingsAPI.createMeeting(token as string, args);
     if (response.status === 200) {
-      console.log(response);
+      dispatch(
+        getMyCreatedMeetings({
+          size: 5,
+          meetingStatus: "CREATED",
+          currentPage: 0,
+        })
+      );
       return;
     } else {
       return rejectWithValue({
@@ -265,7 +280,7 @@ export const getRequestsByMeetingId = createAsyncThunk<
         }) => dispatch(userInfo(request.userId))
       );
 
-      dispatch(setRequests(response.data));
+      dispatch(setRequests({ data: response.data, meetingId: meetingId }));
       return;
     } else {
       return rejectWithValue({
@@ -301,7 +316,7 @@ const initialState: Meetings = {
     requests: {
       status: "idle",
       error: null,
-      data: null,
+      data: [],
       currentPage: 0,
     },
   },
@@ -317,7 +332,11 @@ const initialState: Meetings = {
       currentPage: 0,
     },
   },
-  meetingById: null,
+  meetingById: {
+    status: "idle",
+    error: null,
+    data: null,
+  },
 };
 
 // categoriesSlice
@@ -354,9 +373,15 @@ const meetingsSlice = createSlice({
     },
     setRequests(
       state,
-      action: PayloadAction<getRequestsByMeetingIdType | null>
+      action: PayloadAction<{
+        data: getRequestsByMeetingIdType;
+        meetingId: number;
+      }>
     ) {
-      state.myCreatedMeetings.requests.data = action.payload;
+      state.myCreatedMeetings.requests.data = [
+        ...state.myCreatedMeetings.requests.data,
+        action.payload,
+      ];
     },
     setCurrentPage(state, action: PayloadAction<number>) {
       state.allMeetings.currentPage = action.payload;
@@ -368,7 +393,7 @@ const meetingsSlice = createSlice({
       state.allMeetings.categoryIds = action.payload ? action.payload : null;
     },
     setMeetingById(state, action: PayloadAction<getMeetingByIdType>) {
-      state.meetingById = action.payload;
+      state.meetingById.data = action.payload;
     },
     setCoordinates(state, action: PayloadAction<{ lat: number; lng: number }>) {
       state.allMeetings.userLongitude = action.payload.lng;
@@ -411,6 +436,18 @@ const meetingsSlice = createSlice({
     builder.addCase(getMyCreatedMeetings.rejected, (state, action) => {
       state.myCreatedMeetings.status = "rejected";
       state.myCreatedMeetings.error = action.payload?.message;
+    });
+    builder.addCase(getMeetingById.pending, (state) => {
+      state.meetingById.status = "loading";
+      state.meetingById.error = null;
+    });
+    builder.addCase(getMeetingById.fulfilled, (state) => {
+      state.meetingById.status = "resolved";
+      state.meetingById.error = null;
+    });
+    builder.addCase(getMeetingById.rejected, (state, action) => {
+      state.meetingById.status = "rejected";
+      state.meetingById.error = action.payload?.message;
     });
   },
 });

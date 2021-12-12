@@ -11,6 +11,9 @@ import {
 } from "utils/MeetingsFunctions";
 import { CreatedMeeting } from "./created-meeting/CreatedMeeting";
 import { AttendedMeeting } from "./attended-meeting/AttendedMeeting";
+import { Loading } from "../../general";
+
+import styles from './MeetingsPage.module.scss'
 
 const MeetingPageContainer = () => {
   let { id: meetingId, meetingType } = useParams();
@@ -18,44 +21,48 @@ const MeetingPageContainer = () => {
   useEffect(() => {
     dispatch(getMeetingById(Number(meetingId)));
   }, [dispatch, meetingId]);
-  const { meetingById } = useSelector((state: RootState) => state.meetings);
+  const { data, status, error } = useSelector(
+    (state: RootState) => state.meetings.meetingById
+  );
 
-  if (!meetingById) return <p>Loading</p>;
+  if (error) return <p>{error}</p>;
+  if (!data || status === "loading") return <Loading />;
+
   return (
     <UserWrapper>
-      <section>
+      <div className={styles.container}>
+      <section className={styles.left_section}>
         <iframe
-          width="300"
-          height="170"
+          width="100%"
+          height="96"
           frameBorder="0"
           scrolling="no"
-          src={`https://maps.google.com/maps?q=${meetingById.latitude},${meetingById.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+          src={`https://maps.google.com/maps?q=${data.latitude},${data.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
         />
-        <h3>
-          <GetCategoryName categoryId={meetingById.categoryId} />
+        <h3 className={styles.name}>
+          <GetCategoryName categoryId={data.categoryId} />
         </h3>
-        <p>
-          <GetConvertedTime text={meetingById.startDate} />
+        <p className={styles.time}>
+          <GetConvertedTime text={data.startDate} />
         </p>
-        <p>
-          <GetConvertedAddress
-            lat={meetingById.latitude}
-            lng={meetingById.longitude}
-          />
+        <p className={styles.address}>
+          <GetConvertedAddress lat={data.latitude} lng={data.longitude} />
         </p>
-        <p> {meetingById.description}</p>
+        <div className={styles.line}/>
+        <p className={styles.description}> {data.description}</p>
       </section>
-      <section>
+      <section className={styles.right_section}>
         {meetingType === "created" && (
           <CreatedMeeting
-            participantsIds={meetingById.participantsIds}
-            meetingId={meetingById.id}
+            participantsIds={data.participantsIds}
+            meetingId={data.id}
           />
         )}
         {meetingType === "attended" && (
-          <AttendedMeeting participantsIds={meetingById.participantsIds} />
+          <AttendedMeeting participantsIds={data.participantsIds} />
         )}
       </section>
+      </div>
     </UserWrapper>
   );
 };

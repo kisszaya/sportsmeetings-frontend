@@ -5,11 +5,14 @@ import {
   ErrorMessage,
   Field as FormikField,
 } from "formik";
-import Coordinates from "./coodrinates/Coordinates";
+import { Coordinates } from "./coodrinates/Coordinates";
 import { useDispatch, useSelector } from "react-redux";
 import { allCategories } from "store/categoriesSlice";
 import { RootState } from "store";
-import { MeetingField, MeetingFieldSelect } from "elements/service";
+import {
+  DropdownFormik,
+  MeetingField,
+} from "elements/service";
 import {
   ConvertedEndDate,
   Days,
@@ -19,17 +22,20 @@ import {
   Months,
   TimeZone,
 } from "./date-functions/DateFunctions";
-import { useState } from "react";
 import {
-  CoordinatesType,
   CreateMeetingFormikType,
   CreateMeetingType,
 } from "types/MeetingTypes";
 import { createNewMeeting } from "store/meetingsSlice";
+import {useNavigate} from "react-router-dom";
 
 import styles from "./CreateMeeting.module.scss";
 
 const initialValues: CreateMeetingFormikType = {
+  coordinates: {
+    lat: null,
+    lng: null,
+  },
   categoryId: null,
   description: null,
   dayOfMonth: null,
@@ -50,11 +56,8 @@ const CreateMeeting = () => {
   );
   if (status === "idle") dispatch(allCategories());
 
-  // Coordinates
-  const [coordinates, setCoordinates] = useState<CoordinatesType>({
-    lat: null,
-    lng: null,
-  });
+  // Navigate after submit
+  const navigate = useNavigate();
 
   // Validate
   const validate = (values: FormValues) => {
@@ -67,6 +70,7 @@ const CreateMeeting = () => {
       meetingDurationMinutes,
       minute,
       categoryId,
+      coordinates,
     } = values;
     const errors: { [field: string]: string } = {};
 
@@ -82,6 +86,8 @@ const CreateMeeting = () => {
     if (!meetingDurationMinutes)
       errors.meetingDurationMinutes =
         "Необходимо указать сколько минут будет ваша встреча";
+    if (!coordinates.lng || !coordinates.lat)
+      errors.coordinates = "Пожалуйста введите адрес еще раз";
     if (!categoryId) errors.categoryId = "Необходимо выбрать категорию";
     if (!maxNumbOfParticipants)
       errors.maxNumbOfParticipants =
@@ -99,8 +105,8 @@ const CreateMeeting = () => {
   const onSubmit = async (values: FormValues) => {
     let result: CreateMeetingType;
     if (
-      coordinates.lat &&
-      coordinates.lng &&
+      values.coordinates.lng &&
+      values.coordinates.lat &&
       values.meetingDurationMinutes &&
       values.month &&
       values.dayOfMonth &&
@@ -120,8 +126,8 @@ const CreateMeeting = () => {
           Number(values.minute),
           Number(values.meetingDurationMinutes)
         ),
-        latitude: coordinates.lat,
-        longitude: coordinates.lng,
+        latitude: values.coordinates.lat,
+        longitude: values.coordinates.lng,
         maxNumbOfParticipants: values.maxNumbOfParticipants,
         startDate: {
           dayOfMonth: values.dayOfMonth,
@@ -132,6 +138,7 @@ const CreateMeeting = () => {
         },
       };
       dispatch(createNewMeeting(result));
+      navigate('/profile/events');
     }
   };
 
@@ -146,24 +153,23 @@ const CreateMeeting = () => {
       >
         {({ isSubmitting, isValid, values }) => (
           <FormikForm className={styles.form_container}>
-            <FormikField as="select" name="categoryId">
-              <option value="" disabled selected>
-                Категория
-              </option>
-              {categories?.map((category) => (
-                <option value={category.id}>{category.name}</option>
-              ))}
-            </FormikField>
+            <FormikField
+              divProps={{ className: styles.category_dropdown }}
+              component={DropdownFormik}
+              name="categoryId"
+              placeholder="Категория"
+              listItems={categories?.map((category) => ({
+                id: category.id,
+                displayText: category.name,
+              }))}
+            />
             <MeetingField
               component="textarea"
               placeholder="Описание встречи"
               name="description"
               type="text"
             />
-            <Coordinates
-              coordinates={coordinates}
-              setCoordinates={setCoordinates}
-            />
+            <FormikField component={Coordinates} name="coordinates" />
             <h3 className={styles.label}>Максимальноe кол-во участников</h3>
             <MeetingField
               placeholder="Кол-во"
@@ -174,50 +180,50 @@ const CreateMeeting = () => {
               В какой день и время начнется встреча?
             </h3>
             <div className={styles.time_container}>
-              <MeetingFieldSelect name="month">
-                <>
-                  <option value="" disabled selected>
-                    Месяц
-                  </option>
-                  {Months().map((month) => (
-                    <option value={month.id}>{month.name}</option>
-                  ))}
-                </>
-              </MeetingFieldSelect>
+              <FormikField
+                divProps={{ className: styles.time_dropdown }}
+                component={DropdownFormik}
+                name="month"
+                placeholder="Месяц"
+                listItems={Months().map((month) => ({
+                  id: month.id,
+                  displayText: month.name,
+                }))}
+              />
               {values.month && (
-                <MeetingFieldSelect name="dayOfMonth">
-                  <>
-                    <option value="" disabled selected>
-                      Число
-                    </option>
-                    {Days(Number(values.month)).map((day) => (
-                      <option value={day}>{day}</option>
-                    ))}
-                  </>
-                </MeetingFieldSelect>
+                <FormikField
+                  divProps={{ className: styles.time_dropdown }}
+                  component={DropdownFormik}
+                  name="dayOfMonth"
+                  placeholder="Число"
+                  listItems={Days(Number(values.month)).map((day) => ({
+                    id: day,
+                    displayText: day,
+                  }))}
+                />
               )}
               {values.dayOfMonth && (
                 <>
-                  <MeetingFieldSelect name="hourOfDay">
-                    <>
-                      <option value="" disabled selected>
-                        Часы
-                      </option>
-                      {Hours().map((hour) => (
-                        <option value={hour}>{hour}</option>
-                      ))}
-                    </>
-                  </MeetingFieldSelect>
-                  <MeetingFieldSelect name="minute">
-                    <>
-                      <option value="" disabled selected>
-                        Минуты
-                      </option>
-                      {Minutes().map((minute) => (
-                        <option value={minute}>{minute}</option>
-                      ))}
-                    </>
-                  </MeetingFieldSelect>
+                  <FormikField
+                    divProps={{ className: styles.time_dropdown }}
+                    component={DropdownFormik}
+                    name="hourOfDay"
+                    placeholder="Часы"
+                    listItems={Hours().map((hour) => ({
+                      id: hour,
+                      displayText: hour,
+                    }))}
+                  />
+                  <FormikField
+                    divProps={{ className: styles.time_dropdown }}
+                    component={DropdownFormik}
+                    name="minute"
+                    placeholder="Минуты"
+                    listItems={Minutes().map((min) => ({
+                      id: min,
+                      displayText: min,
+                    }))}
+                  />
                 </>
               )}
             </div>
@@ -226,16 +232,16 @@ const CreateMeeting = () => {
                 <h3 className={styles.label}>
                   Сколько минут будет длиться встреча
                 </h3>
-                <MeetingFieldSelect name="meetingDurationMinutes">
-                  <>
-                    <option value="" disabled selected>
-                      Минуты
-                    </option>
-                    {MeetingDurationMinutes().map((min) => (
-                      <option value={min}>{min}</option>
-                    ))}
-                  </>
-                </MeetingFieldSelect>
+                <FormikField
+                  divProps={{ className: styles.time_dropdown }}
+                  component={DropdownFormik}
+                  name="meetingDurationMinutes"
+                  placeholder="Минуты"
+                  listItems={MeetingDurationMinutes().map((min) => ({
+                    id: min,
+                    displayText: min,
+                  }))}
+                />
               </>
             )}
             <div className={styles.error_messages}>
@@ -248,12 +254,13 @@ const CreateMeeting = () => {
               <ErrorMessage name="month" component="p" />
               <ErrorMessage name="meetingDurationMinutes" component="p" />
               <ErrorMessage name="maxNumbOfParticipants" component="p" />
+              <ErrorMessage name="coordinates" component="p" />
             </div>
             <div className={styles.button_container}>
               <MainButton
-                  buttonProps={{ type: "submit" }}
-                  type="medium"
-                  disabled={isSubmitting || !isValid}
+                buttonProps={{ type: "submit" }}
+                type="medium"
+                disabled={isSubmitting || !isValid}
               >
                 Создать встречу
               </MainButton>

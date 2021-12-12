@@ -1,21 +1,19 @@
 import { UserWrapper } from "elements/ui";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
-import { getMyCreatedMeetings } from "store/meetingsSlice";
 import { useEffect, useState } from "react";
-import {
-  GetCategoryName,
-  GetConvertedAddress,
-  GetConvertedTime,
-  GetCreatorUsername,
-} from "utils/MeetingsFunctions";
+import { getMyCreatedMeetings } from "store/meetingsSlice";
+import { RootState } from "store";
+import { MeetingItem } from "../meeting-item/MeetingItem";
 import { NavLink } from "react-router-dom";
+import { Paginator } from "elements/service";
 
-import styles from "./CreatedMeetings.module.scss";
-import { Loading } from "../../../general";
+import styles from "../MyMeetings.module.scss";
+
+import { ReactComponent as ArrowSVG } from "../media/arrow.svg";
+import { Loading } from "components/general";
 
 const CreatedMeetings = () => {
-  // Current Page
+  // Current page state
   const [currentPage, setCurrentPage] = useState(0);
 
   // Redux
@@ -28,55 +26,45 @@ const CreatedMeetings = () => {
         currentPage: currentPage,
       })
     );
-  }, [dispatch, currentPage]);
-  const { createdData, status, error } = useSelector(
+  }, [currentPage]);
+  const { createdData, error, status } = useSelector(
     (state: RootState) => state.meetings.myCreatedMeetings
   );
-  if (status === "loading") return <Loading />;
+  if (!createdData.data || status === "loading") return <Loading />;
   if (error) return <p>{error}</p>;
 
   return (
     <UserWrapper>
-      <div>
-        {createdData &&
-          createdData.data?.meetings.map((meeting, key) => (
-            <NavLink
-              to={`/meetings/created/${meeting.id}`}
-              className={styles.itemContainer}
-            >
-              <section className={styles.top}>
-                <h3>
-                  <GetCategoryName categoryId={meeting.categoryId} />
-                </h3>
-                <div className={styles.placeAndTime}>
-                  <p>
-                    <GetConvertedTime text={meeting.startDate} />
-                  </p>
-                  <p>
-                    <GetConvertedAddress
-                      lng={meeting.longitude}
-                      lat={meeting.latitude}
-                    />
-                  </p>
-                  <iframe
-                    width="300"
-                    height="170"
-                    frameBorder="0"
-                    scrolling="no"
-                    src={`https://maps.google.com/maps?q=${meeting.latitude},${meeting.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                  />
-                </div>
-              </section>
-              <section className={styles.bottom}>
-                <p>{meeting.description}</p>
-                <div className={styles.buttons}>
-                  <p>
-                    <GetCreatorUsername meeting={meeting} />
-                  </p>
-                </div>
-              </section>
+      <div className={styles.container}>
+        <section className={styles.top_section}>
+          <div className={styles.title_container}>
+            <NavLink to="/profile/events" className={styles.arrowSVG}>
+              <ArrowSVG />
             </NavLink>
-          ))}
+            <h4 className={styles.title}>Предстоящие встречи</h4>
+          </div>
+          <NavLink
+            to="/meetings/created/finished"
+            className={styles.finished_meetings_link}
+          >
+            Открыть завершенные встречи
+          </NavLink>
+        </section>
+        <section className={styles.data_section}>
+          {createdData.data &&
+            createdData.data.meetings.map((meeting) => (
+              <MeetingItem meeting={meeting} status="CREATED" isMine={true} />
+            ))}
+        </section>
+        {createdData.data.totalPage !== 1 && (
+          <section className={styles.paginator}>
+            <Paginator
+              setCurrentPage={setCurrentPage}
+              totalPage={createdData.data.totalPage}
+              currentPage={currentPage}
+            />
+          </section>
+        )}
       </div>
     </UserWrapper>
   );

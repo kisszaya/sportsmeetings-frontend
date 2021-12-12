@@ -1,0 +1,24 @@
+
+.container{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.page{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 140%;
+  color: var(--black);
+  padding-right: 4px;
+  padding-left: 4px;
+  cursor: pointer;
+}
+
+.active_page{
+  color: var(--white);
+  background: var(--auth-dark);
+  border-radius: 3px;
+  cursor: default;
+}

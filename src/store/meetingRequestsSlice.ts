@@ -75,7 +75,6 @@ export const updateRequestStatus = createAsyncThunk<
             updateParticipantStatusReqDto: "ADD"
           })
         );
-      dispatch(getRequestsByMeetingId(meetingId))
       return;
     } else
       return rejectWithValue({
@@ -108,6 +107,7 @@ export const updateParticipantInMeeting = createAsyncThunk<
     );
 
     if (response.status === 200) {
+      dispatch(getRequestsByMeetingId(meetingId))
       dispatch(getMeetingById(meetingId))
       return;
     } else if (response.status === 422)

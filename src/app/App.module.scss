@@ -133,31 +133,38 @@ body {
   font-family: "Ubuntu", serif;
 
   --auth-dark: #0e1b21;
+  --some-blue: #E1F2FB;
   --auth-blue: #d1e8fa;
   --auth-input-border: #d7dddf;
   --auth-input: #f1f3f4;
   --auth-input-text: #8e9ea4;
   --tertiary-dark-blue: #71868E;
   --auth-input-border-focus: #bec6c9;
+  --request-border: #DCE1E5;
+  --request: #E5E9EB;
   --error: #d40b0b;
   --black: #000;
   --white: #fff;
   --primaty_dark_blue: #778795;
   --fourth_dark_blue: #9BACB5;
+  --some-color: #7B7B7B;;
   --dark-green: #29424c;
+  --dropdown-default: #6A8C9E;
+  --fifth_dark_blue: #565656;
   --main-background: #f3f5f6;
   --navlink-background: #e5e9eb;
   --edit-button-background: #F1F3F4;
   --navlink-background-hover: #d6dee2;
   --secondary-dark-blue: #4d707d;
   --telegram-gradient: linear-gradient(
-    99.36deg,
-    #1eb1e1 8.62%,
-    #1ca8d5 62.54%,
-    #1b9fcb 113.2%
-  );
+  99.36deg,
+  #1eb1e1 8.62%,
+  #1ca8d5 62.54%,
+  #1b9fcb 113.2%
+);
   --telegram-text: #0090BF;
   --primary-blue: #CFE1EF;
+  --dropdown-hover: #E4EEF6;
   --primary-blue-hover: #BFD7EA;
 }
 

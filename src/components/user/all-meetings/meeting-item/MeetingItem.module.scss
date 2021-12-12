@@ -1,0 +1,125 @@
+.container {
+  width: 49%;
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--auth-input-border);
+  filter: drop-shadow(0px 0px 40px rgba(96, 136, 169, 0.2));
+  padding: 16px 24px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.top_section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  iframe {
+    border-radius: 6px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.category {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 125%;
+  margin-bottom: 12px;
+}
+
+.time {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 18px;
+  color: var(--primaty_dark_blue);
+  margin-bottom: 6px;
+}
+
+.address {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 18px;
+  color: var(--primaty_dark_blue);
+}
+
+.line {
+  height: 1px;
+  width: calc(100% + 24px + 32px);
+  margin-left: -32px;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  background: var(--auth-input-border);
+}
+
+.description_section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
+
+.nickname {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 140%;
+  color: var(--tertiary-dark-blue);
+  margin-bottom: 2px;
+
+  a {
+    color: var(--tertiary-dark-blue);
+  }
+}
+
+.description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 135%;
+}
+
+.bottom_section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.participants {
+  display: flex;
+  flex-direction: column;
+}
+
+.max_number_of_participants {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 140%;
+}
+
+.number_of_participants {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 140%;
+  color: var(--black);
+}
+
+.button {
+  border-radius: 8px;
+  border: none;
+  padding: 8px 32px 9px 32px;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 17px;
+  color: var(--white);
+  background: var(--dark-green);
+  transition: 0.2s;
+
+  &:hover {
+    background: var(--auth-dark);
+  }
+}
