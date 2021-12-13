@@ -2,24 +2,25 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "store";
 import meetingsAPI from "api/meetingsAPI";
 import {
+  allMeetingsType,
   CreateMeetingType,
   getAllMeetingsType,
   getMeetingByIdType,
   getRequestsByMeetingIdType,
 } from "types/MeetingTypes";
-import { userInfo } from "./ProfileSlice";
 
 // Register interface
 interface Meetings {
   status: "loading" | "idle" | "resolved" | "rejected";
   error: string | undefined | null;
   allMeetings: {
-    currentPage: number;
+    status: "loading" | "idle" | "resolved" | "rejected";
+    error: string | undefined | null;
+    totalPage: number;
     distanceInMeters: number;
     userLatitude: number | null;
     userLongitude: number | null;
-    categoryIds: number[] | null;
-    data: getAllMeetingsType | null;
+    data: allMeetingsType | null;
   };
   myCreatedMeetings: {
     status: "loading" | "idle" | "resolved" | "rejected";
@@ -98,37 +99,48 @@ export const createNewMeeting = createAsyncThunk<
 
 export const getAllMeetings = createAsyncThunk<
   void,
-  void,
+  {
+    categoryIds: number[] | null;
+    currentPage: number;
+    distanceInKilometers: number;
+  },
   { rejectValue: FetchAuthError }
 >(
   "meetings/getAllMeetings",
-  async function (args, { rejectWithValue, getState, dispatch }) {
+  async function (
+    { categoryIds, currentPage, distanceInKilometers },
+    { rejectWithValue, getState, dispatch }
+  ) {
     const state = getState() as RootState;
     const token = state.auth.userToken;
     const allMeetingsData = state.meetings.allMeetings;
+    const distanceInMeters = distanceInKilometers * 1000;
 
     if (allMeetingsData.userLongitude && allMeetingsData.userLatitude) {
       let response;
-      if (!allMeetingsData.categoryIds) {
+      if (!categoryIds) {
         response = await meetingsAPI.getAllMeetings(
           token as string,
-          allMeetingsData.currentPage,
-          allMeetingsData.distanceInMeters,
+          currentPage,
+          distanceInMeters,
           allMeetingsData.userLatitude,
           allMeetingsData.userLongitude
         );
       } else {
+        console.log("ci", categoryIds);
         response = await meetingsAPI.getAllMeetings(
           token as string,
-          allMeetingsData.currentPage,
-          allMeetingsData.distanceInMeters,
+          currentPage,
+          distanceInMeters,
           allMeetingsData.userLatitude,
           allMeetingsData.userLongitude,
-          allMeetingsData.categoryIds
+          categoryIds
         );
       }
       if (response.status === 200) {
-        dispatch(setAllMeetings(response.data));
+        console.log("in response 200", response.data.meetings.length);
+        dispatch(setAllMeetingsTotalPage(response.data.totalPage));
+        dispatch(setAllMeetings(response.data.meetings));
         return;
       } else {
         return rejectWithValue({
@@ -271,15 +283,14 @@ export const getRequestsByMeetingId = createAsyncThunk<
       meetingId
     );
     if (response.status === 200) {
-      response.data.requests.forEach(
-        (request: {
-          description: string;
-          id: number;
-          meetingId: number;
-          userId: number;
-        }) => dispatch(userInfo(request.userId))
-      );
-
+      // response.data.requests.forEach(
+      //   (request: {
+      //     description: string;
+      //     id: number;
+      //     meetingId: number;
+      //     userId: number;
+      //   }) => dispatch(userInfo(request.userId))
+      // );
       dispatch(setRequests({ data: response.data, meetingId: meetingId }));
       return;
     } else {
@@ -295,11 +306,12 @@ const initialState: Meetings = {
   status: "idle",
   error: null,
   allMeetings: {
-    currentPage: 0,
+    status: "idle",
+    error: null,
+    totalPage: 1,
     distanceInMeters: 9999999,
     userLatitude: null,
     userLongitude: null,
-    categoryIds: null,
     data: null,
   },
   myCreatedMeetings: {
@@ -344,8 +356,22 @@ const meetingsSlice = createSlice({
   name: "meetings",
   initialState,
   reducers: {
-    setAllMeetings(state, action: PayloadAction<getAllMeetingsType>) {
-      state.allMeetings.data = action.payload;
+    setAllMeetings: function (
+      state,
+      action: PayloadAction<allMeetingsType | null>
+    ) {
+      if (action.payload === null) {
+        state.allMeetings.data = null;
+      } else if (state.allMeetings.data === null) {
+        state.allMeetings.data = action.payload;
+      } else {
+        action.payload.forEach((meeting) =>
+          state.allMeetings?.data?.push(meeting)
+        );
+      }
+    },
+    setAllMeetingsTotalPage(state, action: PayloadAction<number>) {
+      state.allMeetings.totalPage = action.payload;
     },
     setMyCreatedMeetings(
       state,
@@ -376,21 +402,12 @@ const meetingsSlice = createSlice({
       action: PayloadAction<{
         data: getRequestsByMeetingIdType;
         meetingId: number;
-      }>
+      } | null>
     ) {
-      state.myCreatedMeetings.requests.data = [
-        ...state.myCreatedMeetings.requests.data,
-        action.payload,
-      ];
-    },
-    setCurrentPage(state, action: PayloadAction<number>) {
-      state.allMeetings.currentPage = action.payload;
-    },
-    setDistanceInMeters(state, action: PayloadAction<number>) {
-      state.allMeetings.distanceInMeters = action.payload;
-    },
-    setCategoryIds(state, action: PayloadAction<Array<number> | null>) {
-      state.allMeetings.categoryIds = action.payload ? action.payload : null;
+      state.myCreatedMeetings.requests.data =
+        action.payload === null
+          ? []
+          : [...state.myCreatedMeetings.requests.data, action.payload];
     },
     setMeetingById(state, action: PayloadAction<getMeetingByIdType>) {
       state.meetingById.data = action.payload;
@@ -449,21 +466,31 @@ const meetingsSlice = createSlice({
       state.meetingById.status = "rejected";
       state.meetingById.error = action.payload?.message;
     });
+    builder.addCase(getAllMeetings.pending, (state) => {
+      state.allMeetings.status = "loading";
+      state.allMeetings.error = null;
+    });
+    builder.addCase(getAllMeetings.fulfilled, (state) => {
+      state.allMeetings.status = "resolved";
+      state.allMeetings.error = null;
+    });
+    builder.addCase(getAllMeetings.rejected, (state, action) => {
+      state.allMeetings.status = "rejected";
+      state.allMeetings.error = action.payload?.message;
+    });
   },
 });
 
 export const {
   setAllMeetings,
-  setCurrentPage,
   setCoordinates,
-  setCategoryIds,
-  setDistanceInMeters,
   setMyCreatedMeetings,
   setMyCreatedFinishedMeetings,
   setMyAttendedMeetings,
   setMeetingById,
   setMyAttendedFinishedMeetings,
   setRequests,
+  setAllMeetingsTotalPage,
 } = meetingsSlice.actions;
 
 export default meetingsSlice.reducer;

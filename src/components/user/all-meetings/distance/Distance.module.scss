@@ -1,0 +1,111 @@
+@import "~antd/dist/antd.css";
+//import 'antd/lib/slider/style/css'
+
+
+.dropdownBox {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 8px 16px;
+  width: 300px;
+
+  color: var(--white);
+  font-size: 14px;
+  font-weight: normal;
+  border: none;
+  margin-bottom: 20px;
+
+  background: #326895;
+  border-radius: 6px;
+
+  .span{
+    font-weight: 300;
+    font-size: 12px;
+    margin-left: 12px;
+    padding-top: 1px;
+  }
+
+  svg {
+    height: 10px;
+    margin-left: auto;
+
+    transition: transform 0.3s;
+    path {
+      &:global(.arrow) {
+        stroke: var(--white);
+      }
+    }
+  }
+
+  &.visible {
+    svg {
+      transform: rotate(180deg);
+    }
+
+    .dropdownContent {
+      transform: translateY(calc(100% + 4px)) scale(1);
+      visibility: visible;
+      opacity: 1;
+
+      transition: visibility 0s 0s, opacity 0.3s, transform 0.3s;
+    }
+  }
+}
+
+.toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  background-color: transparent;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  height: 90px;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  background-color: var(--white);
+  border: 1px solid var(--fourth_dark_blue);
+  border-radius: 5px;
+  box-shadow: 0 0 1rem rgba(black, 0.2);
+  transform: translateY(80%) scale(0.8);
+  visibility: hidden;
+  opacity: 0;
+
+  transition: visibility 0s 0.3s, opacity 0.3s, transform 0.3s;
+
+  .distanceValue {
+    font-size: 15px;
+    margin-top: 4px;
+    font-weight: bold;
+    color: var(--dark-green);
+    margin-left: auto;
+    margin-right: 2px;
+  }
+
+  &:after {
+    min-height: 5px;
+
+    content: "";
+  }
+}

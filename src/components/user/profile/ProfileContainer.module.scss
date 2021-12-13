@@ -104,8 +104,22 @@
 
 .nav {
   margin-bottom: 16px;
-  a {
+  .link {
     color: var(--primaty_dark_blue);
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 140%;
+
+    text-align: center;
+    margin-right: 32px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .active_link{
+    color: var(--black);
     font-weight: normal;
     font-size: 15px;
     line-height: 140%;

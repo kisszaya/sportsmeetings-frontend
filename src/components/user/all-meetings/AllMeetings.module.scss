@@ -1,5 +1,17 @@
 
-.meeting_container{
+.container{
+  position: relative;
+}
+.filter_container{
+  position: absolute;
+  top: -56px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  right: 0;
+}
+
+.meetings_container{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

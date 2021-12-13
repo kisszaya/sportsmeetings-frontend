@@ -14,11 +14,13 @@ import { NavLink } from "react-router-dom";
 
 import { ReactComponent as AcceptSVG } from "../media/accept.svg";
 import { ReactComponent as RejectSVG } from "../media/reject.svg";
+import { Loading } from "components/general";
 
 export const CreatedMeeting = (props: {
   participantsIds: number[];
   meetingId: number;
 }) => {
+  // Redux
   const dispatch = useDispatch();
   const { data: requestsData } = useSelector(
     (state: RootState) => state.meetings.myCreatedMeetings.requests
@@ -32,9 +34,14 @@ export const CreatedMeeting = (props: {
     (state: RootState) => state.profile.myInfo
   );
 
+  //
+  //   useEffect(() => {dispatch(getRequestsByMeetingId(meetingId))}, []);
+
+
+    // If not loaded
   if (!requestsData.find((meeting) => meeting.meetingId === props.meetingId))
-    return <p>LoadingRequests</p>;
-  if (!myInfo) return <p>LoadingMyInfo</p>;
+    return <Loading />;
+  if (!myInfo) return <Loading />;
 
   const requests = requestsData.find(
     (meeting) => meeting.meetingId === props.meetingId

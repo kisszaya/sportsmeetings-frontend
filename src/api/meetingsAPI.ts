@@ -170,10 +170,11 @@ const userAPI = {
     userLongitude: number,
     categoryIds?: Array<number>
   ) {
-    if (categoryIds)
+    if (categoryIds) {
+        console.log('in api')
       return instance
         .get<getAllMeetingsType>(
-          `?page=${currentPage}&distanceInMeters=${distanceInMeters}&userLatitude=${userLatitude}&userLongitude=${userLongitude}&categoryIds=${categoryIds}&size=20`,
+          `?page=${currentPage}&distanceInMeters=${distanceInMeters}&userLatitude=${userLatitude}&userLongitude=${userLongitude}&categoryIds=${categoryIds}&size=6`,
           {
             headers: {
               Authorization: token,
@@ -183,10 +184,11 @@ const userAPI = {
         .catch(function (error) {
           return error.response;
         });
+    }
     else
       return instance
         .get<getAllMeetingsType>(
-          `?page=${currentPage}&distanceInMeters=${distanceInMeters}&userLatitude=${userLatitude}&userLongitude=${userLongitude}&size=20`,
+          `?page=${currentPage}&distanceInMeters=${distanceInMeters}&userLatitude=${userLatitude}&userLongitude=${userLongitude}&size=6`,
           {
             headers: {
               Authorization: token,

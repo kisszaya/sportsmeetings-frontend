@@ -79,6 +79,19 @@ export type getAllMeetingsType = {
   totalPage: number;
 };
 
+export type allMeetingsType = {
+  categoryId: number;
+  creatorId: number;
+  description: string;
+  endDate: string;
+  id: number;
+  latitude: number;
+  longitude: number;
+  maxNumbOfParticipants: number;
+  participantsIds: number[];
+  startDate: string;
+}[];
+
 export type MeetingType = {
   categoryId: number;
   creatorId: number;

@@ -2,7 +2,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "store";
 import meetingsAPI from "api/meetingsAPI";
 import { AxiosError } from "axios";
-import {getMeetingById, getRequestsByMeetingId} from "./meetingsSlice";
+import {
+  getMeetingById,
+  getRequestsByMeetingId,
+  setRequests,
+} from "./meetingsSlice";
 
 // Register interface
 interface MeetingRequests {
@@ -72,7 +76,7 @@ export const updateRequestStatus = createAsyncThunk<
           updateParticipantInMeeting({
             meetingId: meetingId,
             participantId: response.data.userId,
-            updateParticipantStatusReqDto: "ADD"
+            updateParticipantStatusReqDto: "ADD",
           })
         );
       return;
@@ -107,8 +111,9 @@ export const updateParticipantInMeeting = createAsyncThunk<
     );
 
     if (response.status === 200) {
-      dispatch(getRequestsByMeetingId(meetingId))
-      dispatch(getMeetingById(meetingId))
+      await dispatch(setRequests(null));
+      await dispatch(getMeetingById(meetingId));
+      await dispatch(getRequestsByMeetingId(meetingId));
       return;
     } else if (response.status === 422)
       return rejectWithValue({

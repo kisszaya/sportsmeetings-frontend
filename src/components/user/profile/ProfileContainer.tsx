@@ -11,7 +11,7 @@ import { Loading } from "components/general";
 
 import styles from "./ProfileContainer.module.scss";
 
-import {ReactComponent as TelegramSVG} from "./media/telegram.svg";
+import { ReactComponent as TelegramSVG } from "./media/telegram.svg";
 
 const ProfileContainer = (props: { children: ReactChild | ReactChild[] }) => {
   // Popup
@@ -41,7 +41,7 @@ const ProfileContainer = (props: { children: ReactChild | ReactChild[] }) => {
               className={styles.telegram_button}
             >
               <div className={styles.telegramSVG}>
-                <TelegramSVG/>
+                <TelegramSVG />
               </div>
               Подключить телеграм бота
             </button>
@@ -55,8 +55,22 @@ const ProfileContainer = (props: { children: ReactChild | ReactChild[] }) => {
         </section>
         <section className={styles.right_section}>
           <nav className={styles.nav}>
-            <NavLink to="/profile/reviews">Отзывы</NavLink>
-            <NavLink to="/profile/events">Встречи</NavLink>
+            <NavLink
+              to="/profile/reviews"
+              className={({ isActive }) =>
+                isActive ? styles.active_link : styles.link
+              }
+            >
+              Отзывы
+            </NavLink>
+            <NavLink
+              to="/profile/events"
+              className={({ isActive }) =>
+                isActive ? styles.active_link : styles.link
+              }
+            >
+              Встречи
+            </NavLink>
           </nav>
           <div className={styles.child}>{props.children}</div>
         </section>

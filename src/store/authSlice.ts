@@ -35,10 +35,7 @@ export const login = createAsyncThunk<
     const response = await authAPI.login(password, username);
     switch (response.status) {
       case 200: {
-        localStorage.setItem(
-          "x-auth-token",
-          JSON.stringify(response.data.token)
-        );
+        localStorage.setItem("x-auth-token", response.data.token);
         await dispatch(setUserToken(response.data.token));
         await dispatch(myInfo());
         await dispatch(allCategories());
@@ -127,7 +124,7 @@ export const unregister = createAsyncThunk<void, void>(
     localStorage.removeItem("x-auth-token");
     dispatch(setUserToken(null));
     dispatch(setMyInfo(null));
-    window.location.reload()
+    window.location.reload();
   }
 );
 
