@@ -36,15 +36,15 @@ const ProfileContainer = (props: { children: ReactChild | ReactChild[] }) => {
             <p className={styles.text}>{data.email}</p>
           </div>
           <div className={styles.buttons_container}>
-            <button
-              onClick={() => setPopup(<TelegramBot />)}
-              className={styles.telegram_button}
-            >
-              <div className={styles.telegramSVG}>
-                <TelegramSVG />
-              </div>
-              Подключить телеграм бота
-            </button>
+            {/*<button*/}
+            {/*  onClick={() => setPopup(<TelegramBot />)}*/}
+            {/*  className={styles.telegram_button}*/}
+            {/*>*/}
+            {/*  <div className={styles.telegramSVG}>*/}
+            {/*    <TelegramSVG />*/}
+            {/*  </div>*/}
+            {/*  Подключить телеграм бота*/}
+            {/*</button>*/}
             <button
               onClick={() => setPopup(<EditProfile />)}
               className={styles.edit_profile_button}

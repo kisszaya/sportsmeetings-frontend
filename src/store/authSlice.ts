@@ -90,10 +90,7 @@ export const register = createAsyncThunk<
     );
     switch (response.status) {
       case 200: {
-        localStorage.setItem(
-          "x-auth-token",
-          JSON.stringify(response.data.token)
-        );
+        localStorage.setItem("x-auth-token", response.data.token);
         await dispatch(setUserToken(response.data.token));
         await dispatch(myInfo());
         await dispatch(allCategories());

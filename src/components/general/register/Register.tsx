@@ -98,7 +98,7 @@ const Register = () => {
                 type="large"
                 loading={registerData.status === "loading"}
               >
-                Войти
+                Зарегистрироваться
               </MainButton>
             </div>
             <div className={generalStyles.change_page}>
