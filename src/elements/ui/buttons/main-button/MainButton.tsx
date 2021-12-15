@@ -19,7 +19,7 @@ export const MainButton = (props: ButtonProps) => {
   return (
     <button
       {...buttonProps}
-      disabled={disabled}
+      disabled={disabled || loading}
       className={classNames(styles.container, styles[props.type], {
         [styles.loading]: loading,
       })}

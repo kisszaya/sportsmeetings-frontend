@@ -23,6 +23,7 @@ import { createNewMeeting } from "store/meetingsSlice";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./CreateMeeting.module.scss";
+import {useEffect} from "react";
 
 const initialValues: CreateMeetingFormikType = {
   coordinates: {
@@ -50,6 +51,14 @@ const CreateMeeting = () => {
 
   // Navigate after submit
   const navigate = useNavigate();
+
+  // Use effect
+  useEffect(() => {
+    if (status === 'resolved') {
+      navigate("/profile/events");
+      window.location.reload()
+    }
+  }, [status])
 
   // Validate
   const validate = (values: FormValues) => {
@@ -105,8 +114,8 @@ const CreateMeeting = () => {
       values.description &&
       values.maxNumbOfParticipants &&
       values.categoryId &&
-      values.hourOfDay &&
-      values.minute
+      values.hourOfDay!==null &&
+      values.minute!==null
     ) {
       result = {
         categoryId: Number(values.categoryId),
@@ -129,8 +138,7 @@ const CreateMeeting = () => {
           timeZoneOffset: TimeZone(),
         },
       };
-      await dispatch(createNewMeeting(result));
-      if (status === "resolved") navigate("/profile/events");
+      dispatch(createNewMeeting(result));
     }
   };
 
@@ -219,7 +227,7 @@ const CreateMeeting = () => {
                 </>
               )}
             </div>
-            {values.minute && values.hourOfDay && (
+            {values.minute!==null && values.hourOfDay!== null && (
               <>
                 <h3 className={styles.label}>
                   Сколько минут будет длиться встреча

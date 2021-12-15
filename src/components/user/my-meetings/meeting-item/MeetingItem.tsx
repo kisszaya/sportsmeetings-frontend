@@ -65,8 +65,8 @@ export const MeetingItem = (props: {
       <section className={styles.bottom_section}>
         <div className={styles.line} />
         <p className={styles.description}>
-          {meeting.description.length > 90
-            ? `${meeting.description.length}...`
+          {meeting.description.length > 60
+            ? `${meeting.description.substring(0, 60)}...`
             : meeting.description}
         </p>
         <div className={styles.buttons_container}>

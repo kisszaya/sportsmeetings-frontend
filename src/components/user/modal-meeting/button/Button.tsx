@@ -63,7 +63,7 @@ export const Button = (props: {
         )}
         {status === "resolved" && (
           <div className={classNames(styles.container, styles.resolved)}>
-            Вы записаны
+            Вы подали заявку
           </div>
         )}
         {status === "rejected" && (

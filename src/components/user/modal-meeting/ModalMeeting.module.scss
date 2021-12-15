@@ -15,10 +15,11 @@
 .about_meeting_container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .info_container {
-  width: 66%;
+  width: 64%;
 }
 
 .category {

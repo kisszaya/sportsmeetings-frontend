@@ -14,14 +14,15 @@ import styles from "./AllMeetings.module.scss";
 const AllMeetings: FC = () => {
   // State
   const [currentPage, setCurrentPage] = useState(0);
-  const [distanceInKilometers, setDistanceInKilometers] = useState(10000);
+  const [distanceInKilometers, setDistanceInKilometers] = useState(1000);
   const [categoryIds, setCategoryIds] = useState<null | number[]>(null);
   const [fetching, setFetching] = useState(true);
 
   // Redux
   const dispatch = useDispatch();
-  const { userLongitude, userLatitude, data, totalPage, error } =
-    useSelector((state: RootState) => state.meetings.allMeetings);
+  const { userLongitude, userLatitude, data, totalPage, error } = useSelector(
+    (state: RootState) => state.meetings.allMeetings
+  );
 
   // Get user coordinates, then get all meetings
   useEffect(() => {

@@ -62,7 +62,11 @@ export const MeetingItem = (props: { meeting: MeetingType }) => {
         <p className={styles.nickname}>
           <GetCreatorUsername meeting={props.meeting} />
         </p>
-        <p className={styles.description}>{props.meeting.description}</p>
+        <p className={styles.description}>
+          {props.meeting.description.length > 120
+            ? `${props.meeting.description.substring(0, 120)}...`
+            : props.meeting.description}
+        </p>
       </section>
       <section className={styles.bottom_section}>
         <div className={styles.participants}>
@@ -70,7 +74,10 @@ export const MeetingItem = (props: { meeting: MeetingType }) => {
             {`${props.meeting.maxNumbOfParticipants} всего`}
           </h5>
           <h5 className={styles.number_of_participants}>
-            {PlacesText(props.meeting.participantsIds.length)}
+            {PlacesText(
+              props.meeting.participantsIds.length,
+              props.meeting.maxNumbOfParticipants
+            )}
           </h5>
         </div>
         <button

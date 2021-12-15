@@ -43,7 +43,7 @@ export const Days = (monthId: number) => {
 
 export const MeetingDurationMinutes = () => {
   const minutes: number[] = [];
-  for (let i = 0; i < 19; i++) minutes.push(i * 10);
+  for (let i = 1; i < 19; i++) minutes.push(i * 10);
   return minutes;
 };
 

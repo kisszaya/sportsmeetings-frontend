@@ -79,6 +79,10 @@ export const updateRequestStatus = createAsyncThunk<
             updateParticipantStatusReqDto: "ADD",
           })
         );
+      else {
+        await dispatch(setRequests(null));
+        await dispatch(getRequestsByMeetingId(meetingId));
+      }
       return;
     } else
       return rejectWithValue({

@@ -118,10 +118,11 @@ export const ModalMeeting = (props: { meeting: Meeting }) => {
                 </object>
                 <div className={styles.participants_container}>
                   <p className={styles.participants_title}>
-                    Сейчас участиников:
+                    Осталось свободных мест:
                   </p>
                   <p className={styles.participants_number}>
-                    {props.meeting.participantsIds.length}
+                    {props.meeting.maxNumbOfParticipants -
+                      props.meeting.participantsIds.length}
                   </p>
                 </div>
                 <div className={styles.participants_container}>
