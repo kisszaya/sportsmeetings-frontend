@@ -5,6 +5,8 @@ import { getComments } from "store/ProfileSlice";
 import { RootState } from "store";
 import { NavLink } from "react-router-dom";
 import { GetPhotoByUserId, GetUsernameById } from "utils/MeetingsFunctions";
+import {Loading} from "components/general";
+
 import styles from "./Reviews.module.scss";
 
 const Reviews = () => {
@@ -21,7 +23,7 @@ const Reviews = () => {
     (state: RootState) => state.profile.comments
   );
 
-  if (!commentsData) return <p>Loading...</p>;
+  if (!commentsData) return <Loading/>;
 
   return (
     <ProfileContainer>
@@ -31,7 +33,7 @@ const Reviews = () => {
           <p>Пока что нет комментариев</p>
         ) : (
           commentsData?.comments.map((comment) => (
-            <div className={styles.comment_container}>
+            <div className={styles.comment_container} key={comment.id}>
               <NavLink
                 to={`/user/${comment.authorId}`}
                 className={styles.comment_user_info}

@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { useEffect } from "react";
-import { getMyCreatedMeetings } from "store/meetingsSlice";
+import {
+  getMyCreatedMeetings,
+  setMyCreatedFinishedMeetings,
+  setMyCreatedMeetings,
+} from "store/meetingsSlice";
 import { MeetingItem } from "../meeting-item/MeetingItem";
 import { Loading } from "components/general";
 import { NavLink } from "react-router-dom";
@@ -13,6 +17,12 @@ export const CreatedMeetings = () => {
   const { createdData, finishedData, error, status } = useSelector(
     (state: RootState) => state.meetings.myCreatedMeetings
   );
+
+  useEffect(() => {
+    dispatch(setMyCreatedMeetings(null));
+    dispatch(setMyCreatedFinishedMeetings(null));
+  }, [dispatch]);
+
   useEffect(() => {
     if (!createdData.data)
       dispatch(
@@ -25,7 +35,7 @@ export const CreatedMeetings = () => {
     if (
       createdData.data &&
       !finishedData.data &&
-      createdData.data.meetings.length < 4
+      createdData.data.meetings.length < 5
     ) {
       dispatch(
         getMyCreatedMeetings({
@@ -44,19 +54,27 @@ export const CreatedMeetings = () => {
 
   const createdLength = createdData.data?.meetings.length;
   const finishedLength = finishedData.data?.meetings.length;
-  console.log('createdLength',createdLength)
-  console.log('finishedLength',finishedLength)
   return (
     <>
       <div className={styles.items_container}>
         {createdData.data?.meetings.slice(0, 4).map((meeting) => (
-          <MeetingItem meeting={meeting} status="CREATED" isMine={true} />
+          <MeetingItem
+            meeting={meeting}
+            status="CREATED"
+            isMine={true}
+            key={meeting.id}
+          />
         ))}
         {createdLength !== 5 &&
           finishedData.data?.meetings
             .slice(0, 4 - (createdLength ? createdLength : 0))
             .map((meeting) => (
-              <MeetingItem meeting={meeting} status="FINISHED" isMine={true} />
+              <MeetingItem
+                meeting={meeting}
+                status="FINISHED"
+                isMine={true}
+                key={meeting.id}
+              />
             ))}
       </div>
       {(createdLength ? createdLength : 0) +

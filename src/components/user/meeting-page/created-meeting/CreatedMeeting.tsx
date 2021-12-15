@@ -7,14 +7,14 @@ import {
   updateParticipantInMeeting,
   updateRequestStatus,
 } from "store/meetingRequestsSlice";
+import { Loading } from "components/general";
+import { NavLink } from "react-router-dom";
 
 import generalStyles from "../MeetingsPage.module.scss";
 import styles from "./CreatedMeeting.module.scss";
-import { NavLink } from "react-router-dom";
 
 import { ReactComponent as AcceptSVG } from "../media/accept.svg";
 import { ReactComponent as RejectSVG } from "../media/reject.svg";
-import { Loading } from "components/general";
 
 export const CreatedMeeting = (props: {
   participantsIds: number[];
@@ -22,7 +22,11 @@ export const CreatedMeeting = (props: {
 }) => {
   // Redux
   const dispatch = useDispatch();
-  const { data: requestsData } = useSelector(
+  const {
+    data: requestsData,
+    status,
+    error,
+  } = useSelector(
     (state: RootState) => state.meetings.myCreatedMeetings.requests
   );
   useEffect(() => {
@@ -34,14 +38,11 @@ export const CreatedMeeting = (props: {
     (state: RootState) => state.profile.myInfo
   );
 
-  //
-  //   useEffect(() => {dispatch(getRequestsByMeetingId(meetingId))}, []);
-
-
-    // If not loaded
+  // If not loaded
   if (!requestsData.find((meeting) => meeting.meetingId === props.meetingId))
     return <Loading />;
-  if (!myInfo) return <Loading />;
+  if (!myInfo || status === "loading") return <Loading />;
+  if (error) return <p>{error}</p>;
 
   const requests = requestsData.find(
     (meeting) => meeting.meetingId === props.meetingId
@@ -80,8 +81,8 @@ export const CreatedMeeting = (props: {
       <div className={generalStyles.people_block}>
         {requests!.data!.requests.length === 0
           ? "у вас нет заявок"
-          : requests!.data!.requests.map((request) => (
-              <div className={styles.request_item}>
+          : requests!.data!.requests.map((request, index) => (
+              <div className={styles.request_item} key={index}>
                 <NavLink
                   to={`/user/${request.userId}`}
                   className={styles.request_username}
@@ -116,10 +117,10 @@ export const CreatedMeeting = (props: {
       <div className={generalStyles.people_block}>
         {props.participantsIds.length === 0
           ? "пока что нет участников"
-          : props.participantsIds.map((participant) => (
+          : props.participantsIds.map((participant, index) => (
               <>
                 {participant !== myInfo.id && (
-                  <div className={styles.participant_item}>
+                  <div className={styles.participant_item} key={index}>
                     <NavLink
                       to={`/user/${participant}`}
                       className={styles.participant_username}
@@ -138,6 +139,7 @@ export const CreatedMeeting = (props: {
                 )}
                 {participant === myInfo.id && (
                   <NavLink
+                    key={index}
                     to="/profile/events"
                     className={generalStyles.participant_item}
                   >

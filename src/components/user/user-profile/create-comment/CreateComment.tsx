@@ -1,13 +1,24 @@
-import { Formik, Form as FormikForm, ErrorMessage, Field } from "formik";
-import { useDispatch } from "react-redux";
-import { createComment } from "store/ProfileSlice";
-import { MainButton, PopupHeader } from "../../../../elements/ui";
+import { Formik, Form as FormikForm, ErrorMessage } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { createComment, setCommentsStatus } from "store/ProfileSlice";
+import { MainButton, PopupHeader } from "elements/ui";
+import { MeetingField, ResponsePopup } from "elements/service";
+import { RootState } from "store";
+import { useEffect } from "react";
 
 import styles from "./CreateComment.module.scss";
-import { MeetingField } from "../../../../elements/service";
 
 export const CreateComment = (props: { userId: number }) => {
+  // Redux
+  const { status, error } = useSelector(
+    (state: RootState) => state.profile.comments
+  );
   const dispatch = useDispatch();
+
+  // Null status
+  useEffect(() => {
+    dispatch(setCommentsStatus("idle"));
+  }, [dispatch]);
 
   // Initial values
   const initialValues = {
@@ -33,33 +44,42 @@ export const CreateComment = (props: { userId: number }) => {
 
   return (
     <div className={styles.container}>
-      <PopupHeader title="Настройки" />
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validate={validate}
-        validateOnMount={true}
+      <ResponsePopup
+        responseResult={status}
+        responseTexts={{
+          resolved: "Вы успешно оставили комменатрий пользователю",
+          rejected: "Не получилось оставить комменатрий. Попробуйте еще раз :(",
+        }}
       >
-        <FormikForm className={styles.main_section}>
-          <h3 className={styles.title}>Ваш комменатрий</h3>
-          <MeetingField
-            component="textarea"
-            placeholder="Начните писать"
-            name="text"
-            type="text"
-          />
-          <div className={styles.bottom_section}>
-            <div className={styles.errors_messages}>
-              <ErrorMessage name="text" component="p" />
+        <PopupHeader title="Настройки" />
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validate={validate}
+          validateOnMount={true}
+        >
+          <FormikForm className={styles.main_section}>
+            <h3 className={styles.title}>Ваш комменатрий</h3>
+            <MeetingField
+              component="textarea"
+              placeholder="Начните писать"
+              name="text"
+              type="text"
+            />
+            <div className={styles.bottom_section}>
+              <div className={styles.errors_messages}>
+                <ErrorMessage name="text" component="p" />
+                {error && <p>error</p>}
+              </div>
+              <div className={styles.button_container}>
+                <MainButton type="medium" buttonProps={{ type: "submit" }}>
+                  Оставить комментарий
+                </MainButton>
+              </div>
             </div>
-            <div className={styles.button_container}>
-              <MainButton type="medium" buttonProps={{ type: "submit" }}>
-                Оставить комментарий
-              </MainButton>
-            </div>
-          </div>
-        </FormikForm>
-      </Formik>
+          </FormikForm>
+        </Formik>
+      </ResponsePopup>
     </div>
   );
 };

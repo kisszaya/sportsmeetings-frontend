@@ -3,6 +3,8 @@ import classNames from "classnames";
 
 import styles from "./MainButton.module.scss";
 
+import { ReactComponent as SpinSVG } from "./spin.svg";
+
 type ButtonProps = {
   loading?: boolean;
   disabled?: boolean;
@@ -18,9 +20,16 @@ export const MainButton = (props: ButtonProps) => {
     <button
       {...buttonProps}
       disabled={disabled}
-      className={classNames(styles.container, styles[props.type])}
+      className={classNames(styles.container, styles[props.type], {
+        [styles.loading]: loading,
+      })}
     >
-      {props.children}
+      {!loading && props.children}
+      {loading && (
+        <div className={styles.spinSVG}>
+          <SpinSVG />
+        </div>
+      )}
     </button>
   );
 };

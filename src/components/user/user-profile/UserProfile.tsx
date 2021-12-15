@@ -6,14 +6,12 @@ import { deleteComment, getComments, userInfo } from "store/ProfileSlice";
 import { useContext, useEffect } from "react";
 import { PopupContext } from "elements/service";
 import { CreateComment } from "./create-comment/CreateComment";
-import {
-  GetPhotoByUserId,
-  GetUsernameById,
-} from "../../../utils/MeetingsFunctions";
+import { GetPhotoByUserId, GetUsernameById } from "utils/MeetingsFunctions";
 
 import styles from "./UserProfile.module.scss";
 
 import { ReactComponent as DeleteSVG } from "./media/delete.svg";
+import { Loading } from "components/general";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -36,7 +34,7 @@ const UserProfile = () => {
   );
 
   const userData = usersInfo.find((user) => user.id === userId);
-  if (!userData) return <p>Loading...</p>;
+  if (!userData) return <Loading />;
 
   // Delete function
   const onDeleteComment = (commentId: number, userId: number) => {
@@ -70,7 +68,7 @@ const UserProfile = () => {
               <p>Пока что нет комментариев</p>
             ) : (
               commentsData?.comments.map((comment) => (
-                <div className={styles.comment_container}>
+                <div className={styles.comment_container} key={comment.id}>
                   <NavLink
                     to={
                       comment.authorId === myInfo?.id

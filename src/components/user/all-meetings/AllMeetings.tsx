@@ -7,6 +7,7 @@ import { MeetingItem } from "./meeting-item/MeetingItem";
 import { Categories } from "./categories/Categories";
 import { Loading } from "components/general";
 import { Distance } from "./distance/Distance";
+import "antd/lib/slider/style/css";
 
 import styles from "./AllMeetings.module.scss";
 
@@ -19,7 +20,7 @@ const AllMeetings: FC = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { userLongitude, userLatitude, data, totalPage, status, error } =
+  const { userLongitude, userLatitude, data, totalPage, error } =
     useSelector((state: RootState) => state.meetings.allMeetings);
 
   // Get user coordinates, then get all meetings
@@ -73,14 +74,12 @@ const AllMeetings: FC = () => {
           />
         </div>
         {error && <p>{error}</p>}
-        {
-          data?.length === 0 && <p>Встреч не найдено</p>
-        }
+        {data?.length === 0 && <p>Встреч не найдено</p>}
         {!data && <Loading />}
         {data && (
           <div className={styles.meetings_container}>
-            {data.map((meeting) => (
-              <MeetingItem meeting={meeting} />
+            {data.map((meeting, index) => (
+              <MeetingItem meeting={meeting} key={index} />
             ))}
           </div>
         )}

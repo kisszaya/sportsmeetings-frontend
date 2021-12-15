@@ -3,8 +3,6 @@ import {
   GetConvertedAddress,
   GetConvertedTime,
   GetCreatorUsername,
-  GetPhotoByUserId,
-  GetUsernameById,
 } from "utils/MeetingsFunctions";
 import { Button } from "./button/Button";
 import { useState } from "react";
@@ -16,6 +14,8 @@ import { PopupHeader } from "elements/ui";
 import styles from "./ModalMeeting.module.scss";
 
 import { ReactComponent as ArrowSVG } from "./media/arrow.svg";
+import { ReactComponent as TimeSVG } from "./media/time.svg";
+import { ReactComponent as PlaceSVG } from "./media/place.svg";
 
 type Meeting = {
   categoryId: number;
@@ -78,33 +78,44 @@ export const ModalMeeting = (props: { meeting: Meeting }) => {
                 <p className={styles.category}>
                   <GetCategoryName categoryId={props.meeting.categoryId} />
                 </p>
-                <p className={styles.time}>
-                  <GetConvertedTime text={props.meeting.startDate} />
-                </p>
-                <p className={styles.address}>
-                  <GetConvertedAddress
-                    lat={props.meeting.latitude}
-                    lng={props.meeting.longitude}
-                  />
-                </p>
-                <div className={styles.user_container}>
-                  <GetPhotoByUserId userId={props.meeting.creatorId} />
-                  <p className={styles.username}>
-                    <GetCreatorUsername meeting={props.meeting} />
+                <div className={styles.time_place_container}>
+                  <div>
+                    <TimeSVG />
+                  </div>
+                  <p className={styles.time}>
+                    <GetConvertedTime text={props.meeting.startDate} />
                   </p>
                 </div>
+                <div className={styles.time_place_container}>
+                  <div>
+                    <PlaceSVG />
+                  </div>
+                  <p className={styles.address}>
+                    <GetConvertedAddress
+                      lat={props.meeting.latitude}
+                      lng={props.meeting.longitude}
+                    />
+                  </p>
+                </div>
+                <p className={styles.username}>
+                  <GetCreatorUsername meeting={props.meeting} />
+                </p>
                 <p className={styles.description}>
                   {props.meeting.description}
                 </p>
               </section>
               <section className={styles.meeting_numbers_container}>
-                <iframe
-                  width="140"
-                  height="80"
-                  frameBorder="0"
-                  scrolling="no"
-                  src={`https://maps.google.com/maps?q=${props.meeting.latitude},${props.meeting.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                />
+                <object type="owo/uwu" className={styles.img}>
+                  <a
+                    href={`http://maps.google.com/maps?q=${props.meeting.latitude},${props.meeting.longitude}`}
+                    target="_blank"
+                  >
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.meeting.latitude},${props.meeting.longitude}&zoom=12&size=200x200&markers=color:red%7C${props.meeting.latitude},${props.meeting.longitude}&key=AIzaSyBB8NX_l1PeFmiGqs8unnV88wjs_MW1J9k`}
+                      alt="Map"
+                    />
+                  </a>
+                </object>
                 <div className={styles.participants_container}>
                   <p className={styles.participants_title}>
                     Сейчас участиников:
@@ -127,12 +138,16 @@ export const ModalMeeting = (props: { meeting: Meeting }) => {
           {comment && (
             <section className={styles.comment_container}>
               <div className={styles.comment_title_container}>
-                <div onClick={() => setComment(false)} className={styles.arrowSVG}>
+                <div
+                  onClick={() => setComment(false)}
+                  className={styles.arrowSVG}
+                >
                   <ArrowSVG />
                 </div>
                 <p className={styles.comment_title}>Ваш комментарий к заявке</p>
               </div>
-              <Field as="textarea"
+              <Field
+                as="textarea"
                 type="text"
                 placeholder="Начните писать"
                 name="description"

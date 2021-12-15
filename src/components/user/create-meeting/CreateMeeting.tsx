@@ -7,12 +7,8 @@ import {
 } from "formik";
 import { Coordinates } from "./coodrinates/Coordinates";
 import { useDispatch, useSelector } from "react-redux";
-import { allCategories } from "store/categoriesSlice";
 import { RootState } from "store";
-import {
-  DropdownFormik,
-  MeetingField,
-} from "elements/service";
+import { DropdownFormik, MeetingField } from "elements/service";
 import {
   ConvertedEndDate,
   Days,
@@ -22,12 +18,9 @@ import {
   Months,
   TimeZone,
 } from "./date-functions/DateFunctions";
-import {
-  CreateMeetingFormikType,
-  CreateMeetingType,
-} from "types/MeetingTypes";
+import { CreateMeetingFormikType, CreateMeetingType } from "types/MeetingTypes";
 import { createNewMeeting } from "store/meetingsSlice";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./CreateMeeting.module.scss";
 
@@ -48,13 +41,12 @@ const initialValues: CreateMeetingFormikType = {
 export type FormValues = typeof initialValues;
 
 const CreateMeeting = () => {
+  // Redux
   const dispatch = useDispatch();
-
-  // Get Categories
-  const { categories, status } = useSelector(
-    (state: RootState) => state.categories
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { error, status } = useSelector(
+    (state: RootState) => state.meetings.createMeeting
   );
-  if (status === "idle") dispatch(allCategories());
 
   // Navigate after submit
   const navigate = useNavigate();
@@ -137,8 +129,8 @@ const CreateMeeting = () => {
           timeZoneOffset: TimeZone(),
         },
       };
-      dispatch(createNewMeeting(result));
-      navigate('/profile/events');
+      await dispatch(createNewMeeting(result));
+      if (status === "resolved") navigate("/profile/events");
     }
   };
 
@@ -255,12 +247,14 @@ const CreateMeeting = () => {
               <ErrorMessage name="meetingDurationMinutes" component="p" />
               <ErrorMessage name="maxNumbOfParticipants" component="p" />
               <ErrorMessage name="coordinates" component="p" />
+              {error && <p>{error}</p>}
             </div>
             <div className={styles.button_container}>
               <MainButton
                 buttonProps={{ type: "submit" }}
                 type="medium"
                 disabled={isSubmitting || !isValid}
+                loading={status === "loading"}
               >
                 Создать встречу
               </MainButton>

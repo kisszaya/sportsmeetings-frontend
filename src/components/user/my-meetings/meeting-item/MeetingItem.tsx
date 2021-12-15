@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { MeetingType } from "types/MeetingTypes";
 import {
   GetCategoryName,
@@ -10,6 +9,9 @@ import {
 
 import styles from "./MeetingItem.module.scss";
 
+import { ReactComponent as PlaceSVG } from "../media/place.svg";
+import { ReactComponent as TimeSVG } from "../media/time.svg";
+
 export const MeetingItem = (props: {
   meeting: MeetingType;
   status: "FINISHED" | "CREATED";
@@ -19,8 +21,8 @@ export const MeetingItem = (props: {
   const meetingType = isMine ? "created" : "attended";
 
   return (
-    <NavLink
-      to={`/meetings/${meetingType}/${meeting.id}`}
+    <a
+      href={`/meetings/${meetingType}/${meeting.id}`}
       className={styles.container}
     >
       <section className={styles.top_section}>
@@ -28,23 +30,37 @@ export const MeetingItem = (props: {
           <h3 className={styles.category}>
             <GetCategoryName categoryId={meeting.categoryId} />
           </h3>
-          <p className={styles.time}>
-            <GetConvertedTime text={meeting.startDate} />
-          </p>
-          <p className={styles.address}>
-            <GetConvertedAddress
-              lng={meeting.longitude}
-              lat={meeting.latitude}
-            />
-          </p>
+          <div className={styles.time_container}>
+            <div>
+              <TimeSVG />
+            </div>
+            <p className={styles.time}>
+              <GetConvertedTime text={meeting.startDate} />
+            </p>
+          </div>
+          <div className={styles.address_container}>
+            <div>
+              <PlaceSVG />
+            </div>
+            <p className={styles.address}>
+              <GetConvertedAddress
+                lng={meeting.longitude}
+                lat={meeting.latitude}
+              />
+            </p>
+          </div>
         </div>
-        <iframe
-          width="80"
-          height="48"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://maps.google.com/maps?q=${meeting.latitude},${meeting.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-        />
+        <object type="owo/uwu" className={styles.img}>
+          <a
+            href={`http://maps.google.com/maps?q=${meeting.latitude},${meeting.longitude}`}
+            target="_blank"
+          >
+            <img
+              src={`https://maps.googleapis.com/maps/api/staticmap?center=${meeting.latitude},${meeting.longitude}&zoom=12&size=100x80&markers=color:red%7C${meeting.latitude},${meeting.longitude}&key=AIzaSyBB8NX_l1PeFmiGqs8unnV88wjs_MW1J9k`}
+              alt="Map"
+            />
+          </a>
+        </object>
       </section>
       <section className={styles.bottom_section}>
         <div className={styles.line} />
@@ -70,6 +86,6 @@ export const MeetingItem = (props: {
           )}
         </div>
       </section>
-    </NavLink>
+    </a>
   );
 };

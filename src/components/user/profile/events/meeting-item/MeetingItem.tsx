@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { MeetingType } from "types/MeetingTypes";
 import {
   GetCategoryName,
@@ -19,8 +18,8 @@ export const MeetingItem = (props: {
   const meetingType = isMine ? "created" : "attended";
 
   return (
-    <NavLink
-      to={`/meetings/${meetingType}/${meeting.id}`}
+    <a
+      href={`/meetings/${meetingType}/${meeting.id}`}
       className={styles.container}
     >
       <section className={styles.top_section}>
@@ -38,13 +37,17 @@ export const MeetingItem = (props: {
             />
           </p>
         </div>
-        <iframe
-          width="80"
-          height="48"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://maps.google.com/maps?q=${meeting.latitude},${meeting.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-        />
+        <object type="owo/uwu" className={styles.img}>
+          <a
+            href={`http://maps.google.com/maps?q=${meeting.latitude},${meeting.longitude}`}
+            target="_blank"
+          >
+            <img
+              src={`https://maps.googleapis.com/maps/api/staticmap?center=${meeting.latitude},${meeting.longitude}&zoom=12&size=120x120&markers=color:red%7C${meeting.latitude},${meeting.longitude}&key=AIzaSyBB8NX_l1PeFmiGqs8unnV88wjs_MW1J9k`}
+              alt="Map"
+            />
+          </a>
+        </object>
       </section>
       <section className={styles.bottom_section}>
         {!isMine && (
@@ -52,11 +55,7 @@ export const MeetingItem = (props: {
             <GetCreatorUsername meeting={meeting} />
           </div>
         )}
-        {isMine && (
-          <div className={styles.my_button}>
-            Ваша встреча
-          </div>
-        )}
+        {isMine && <div className={styles.my_button}>Ваша встреча</div>}
         {status === "FINISHED" && (
           <div className={styles.finished_button}>Завершена</div>
         )}
@@ -66,6 +65,6 @@ export const MeetingItem = (props: {
           </div>
         )}
       </section>
-    </NavLink>
+    </a>
   );
 };

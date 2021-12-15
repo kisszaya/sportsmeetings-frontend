@@ -8,4 +8,5 @@ export { EditField } from "./fields/edit-field/EditField";
 export { DropdownFormik } from "./fields/dropdown-field/DropdownFormik";
 
 export { PopupContext } from "./popup/Popup";
+export { ResponsePopup } from "./response-popup/ResponsePopup";
 export { Paginator } from "./paginator/Paginator";

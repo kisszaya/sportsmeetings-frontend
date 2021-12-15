@@ -18,6 +18,8 @@ interface Profile {
   };
   usersInfo: getMyInfoType[] | [];
   comments: {
+    status: "loading" | "idle" | "resolved" | "rejected";
+    error: string | undefined | null;
     data: getCommentsType | null;
     currentPage: number;
   };
@@ -247,6 +249,8 @@ const initialState: Profile = {
   },
   usersInfo: [],
   comments: {
+    status: "idle",
+    error: null,
     currentPage: 0,
     data: null,
   },
@@ -275,6 +279,15 @@ const profileSlice = createSlice({
     },
     setCommentsCurrentPage(state, action: PayloadAction<number>) {
       state.comments.currentPage = action.payload;
+    },
+    setCommentsStatus(state, action: PayloadAction<"loading" | "idle" | "resolved" | "rejected">) {
+      state.comments.status = action.payload;
+    },
+    setChangeInfoStatus(
+      state,
+      action: PayloadAction<"loading" | "idle" | "resolved" | "rejected">
+    ) {
+      state.changeInfo.status = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -326,6 +339,18 @@ const profileSlice = createSlice({
       state.changeInfo.status = "rejected";
       state.changeInfo.error = action.payload?.message;
     });
+    builder.addCase(createComment.pending, (state) => {
+      state.comments.status = "loading";
+      state.comments.error = null;
+    });
+    builder.addCase(createComment.fulfilled, (state) => {
+      state.comments.status = "resolved";
+      state.comments.error = null;
+    });
+    builder.addCase(createComment.rejected, (state, action) => {
+      state.comments.status = "rejected";
+      state.comments.error = action.payload?.message;
+    });
   },
 });
 
@@ -334,7 +359,8 @@ export const {
   setUserInfo,
   nullUsersInfo,
   setComments,
-  setCommentsCurrentPage,
+  setChangeInfoStatus,
+  setCommentsCurrentPage, setCommentsStatus
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

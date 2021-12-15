@@ -17,13 +17,25 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+}
 
-  iframe {
-    border-radius: 4px;
+.img {
+  z-index: 20;
+  width: 29%;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
 .placeAndTime {
+  width: 70%;
+  margin-right: 8px;
 }
 
 .category {

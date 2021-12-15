@@ -52,8 +52,13 @@ const CreatedMeetings = () => {
         </section>
         <section className={styles.data_section}>
           {createdData.data &&
-            createdData.data.meetings.map((meeting) => (
-              <MeetingItem meeting={meeting} status="CREATED" isMine={true} />
+            createdData.data.meetings.map((meeting, index) => (
+              <MeetingItem
+                meeting={meeting}
+                status="CREATED"
+                isMine={true}
+                key={index}
+              />
             ))}
         </section>
         {createdData.data.totalPage !== 1 && (

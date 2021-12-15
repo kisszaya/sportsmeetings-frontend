@@ -4,21 +4,22 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 
 import generalStyles from "../MeetingsPage.module.scss";
+import {Loading} from "components/general";
 
 export const AttendedMeeting = (props: { participantsIds: number[] }) => {
   const { data: myInfo } = useSelector(
     (state: RootState) => state.profile.myInfo
   );
-  if (!myInfo) return <p>LoadingMyInfo</p>;
+  if (!myInfo) return <Loading/>;
 
   return (
     <>
       <p className={generalStyles.title}>Участники</p>
       <div className={generalStyles.people_block}>
-        {props.participantsIds.map((participant) => (
+        {props.participantsIds.map((participant, index) => (
           <>
             {participant !== myInfo.id && (
-              <NavLink
+              <NavLink key={index}
                 to={`/user/${participant}`}
                 className={generalStyles.participant_item}
               >
@@ -26,7 +27,7 @@ export const AttendedMeeting = (props: { participantsIds: number[] }) => {
               </NavLink>
             )}
             {participant === myInfo.id && (
-              <NavLink
+              <NavLink key={index}
                 to="/profile/events"
                 className={generalStyles.participant_item}
               >

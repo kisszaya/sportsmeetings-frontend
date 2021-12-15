@@ -7,6 +7,7 @@ import { FieldProps } from "formik";
 import classNames from "classnames";
 
 import styles from "./Coordinates.module.scss";
+import {Loading} from "../../../general";
 
 export const Coordinates: FC<FieldProps> = ({
   field,
@@ -18,7 +19,7 @@ export const Coordinates: FC<FieldProps> = ({
   const handleSelect = async (value: any) => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    console.log('inCoord', latLng)
+    console.log("inCoord", latLng);
     setAddress(value);
     setFieldValue(field.name, { lat: latLng.lat, lng: latLng.lng });
   };
@@ -38,18 +39,16 @@ export const Coordinates: FC<FieldProps> = ({
             />
             {suggestions.length > 0 && (
               <div className={styles.dropdownList}>
-                {loading ? <div>...loading</div> : null}
+                {loading ? <Loading/> : null}
                 {suggestions &&
-                  suggestions.map((suggestion) => {
-                    return (
-                      <div
-                        className={styles.dropdownItem}
-                        {...getSuggestionItemProps(suggestion)}
-                      >
-                        {suggestion.description}
-                      </div>
-                    );
-                  })}
+                  suggestions.map((suggestion) => (
+                    <div
+                      className={styles.dropdownItem}
+                      {...getSuggestionItemProps(suggestion)}
+                    >
+                      {suggestion.description}
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -57,4 +56,4 @@ export const Coordinates: FC<FieldProps> = ({
       </PlacesAutocomplete>
     </>
   );
-};
+}

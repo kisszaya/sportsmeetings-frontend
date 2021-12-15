@@ -7,11 +7,16 @@ import {
   GetConvertedTime,
   GetCreatorUsername,
 } from "utils/MeetingsFunctions";
+import { PlacesText } from "utils/EndingsFunctions";
 import { MeetingType } from "types/MeetingTypes";
 
 import styles from "./MeetingItem.module.scss";
 
+import { ReactComponent as PlaceSVG } from "../media/place.svg";
+import { ReactComponent as TimeSVG } from "../media/time.svg";
+
 export const MeetingItem = (props: { meeting: MeetingType }) => {
+  // Popup
   const setPopup = useContext(PopupContext);
 
   return (
@@ -21,23 +26,36 @@ export const MeetingItem = (props: { meeting: MeetingType }) => {
           <h3 className={styles.category}>
             <GetCategoryName categoryId={props.meeting.categoryId} />
           </h3>
-          <p className={styles.time}>
-            <GetConvertedTime text={props.meeting.startDate} />
-          </p>
-          <p className={styles.address}>
-            <GetConvertedAddress
-              lat={props.meeting.latitude}
-              lng={props.meeting.longitude}
-            />
-          </p>
+          <div className={styles.time_place_container}>
+            <div>
+              <TimeSVG />
+            </div>
+            <p className={styles.time}>
+              <GetConvertedTime text={props.meeting.startDate} />
+            </p>
+          </div>
+          <div className={styles.time_place_container}>
+            <div>
+              <PlaceSVG />
+            </div>
+            <p className={styles.address}>
+              <GetConvertedAddress
+                lat={props.meeting.latitude}
+                lng={props.meeting.longitude}
+              />
+            </p>
+          </div>
         </div>
-        <iframe
-          width="150"
-          height="96"
-          frameBorder="0"
-          scrolling="no"
-          src={`https://maps.google.com/maps?q=${props.meeting.latitude},${props.meeting.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-        />
+        <a
+          href={`http://maps.google.com/maps?q=${props.meeting.latitude},${props.meeting.longitude}`}
+          target="_blank"
+          className={styles.img}
+        >
+          <img
+            src={`https://maps.googleapis.com/maps/api/staticmap?center=${props.meeting.latitude},${props.meeting.longitude}&zoom=12&size=150x150&markers=color:red%7C${props.meeting.latitude},${props.meeting.longitude}&key=AIzaSyBB8NX_l1PeFmiGqs8unnV88wjs_MW1J9k`}
+            alt="Map"
+          />
+        </a>
       </section>
       <div className={styles.line} />
       <section className={styles.description_section}>
@@ -48,12 +66,12 @@ export const MeetingItem = (props: { meeting: MeetingType }) => {
       </section>
       <section className={styles.bottom_section}>
         <div className={styles.participants}>
-          <p className={styles.max_number_of_participants}>
+          <h5 className={styles.max_number_of_participants}>
             {`${props.meeting.maxNumbOfParticipants} всего`}
-          </p>
-          <p className={styles.number_of_participants}>
-            {`${props.meeting.participantsIds.length} мест`}
-          </p>
+          </h5>
+          <h5 className={styles.number_of_participants}>
+            {PlacesText(props.meeting.participantsIds.length)}
+          </h5>
         </div>
         <button
           className={styles.button}

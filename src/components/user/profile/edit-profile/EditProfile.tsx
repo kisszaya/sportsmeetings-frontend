@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { unregister } from "store/authSlice";
 import { Formik, Form as FormikForm, ErrorMessage } from "formik";
-import { changeMyInfo } from "store/ProfileSlice";
+import { changeMyInfo, setChangeInfoStatus } from "store/ProfileSlice";
 import { Loading } from "components/general";
 import { MainButton, PopupHeader } from "elements/ui";
 import { Button } from "./button/Button";
+import { EditField, PopupContext, ResponsePopup } from "elements/service";
 
 import styles from "./EditProfile.module.scss";
-import { EditField } from "elements/service";
 
 export const EditProfile = () => {
+  // Popup
+  const setPopup = useContext(PopupContext);
+
   // State
   const [page, setPage] = useState<
     "name" | "password" | "email" | "photo" | "main" | "confirm_password"
@@ -26,6 +29,11 @@ export const EditProfile = () => {
     (state: RootState) => state.profile.changeInfo
   );
   const dispatch = useDispatch();
+
+  // Null status
+  useEffect(() => {
+    dispatch(setChangeInfoStatus("idle"));
+  }, [dispatch]);
 
   if (!myInfoData) return <Loading />;
 
@@ -71,7 +79,7 @@ export const EditProfile = () => {
       (page === "photo" && photo)
     )
       setPage("confirm_password");
-    else
+    else {
       await dispatch(
         changeMyInfo({
           confirmPassword,
@@ -82,120 +90,138 @@ export const EditProfile = () => {
           photo,
         })
       );
+      if (status === "resolved") return;
+    }
   };
   return (
     <div className={styles.container}>
-      <PopupHeader title="Настройки" />
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validate={validate}
-        validateOnMount={true}
+      <ResponsePopup
+        responseResult={status}
+        responseTexts={{
+          resolved: "Вы успешно поменяли свои данные",
+          rejected: "Не получилось изменить ваши данные. Попробуйте еще раз :(",
+        }}
       >
-        <FormikForm>
-          <section className={styles.main_section}>
-            {page === "main" && (
-              <>
-                <Button
-                  text="Изменить фото"
-                  buttonProps={{ onClick: () => setPage("photo") }}
-                />
-                <Button
-                  text="Изменить имя и фамилию"
-                  buttonProps={{ onClick: () => setPage("name") }}
-                />
-                <Button
-                  text="Изменить почту"
-                  buttonProps={{ onClick: () => setPage("email") }}
-                />
-                <Button
-                  text="Изменить пароль"
-                  buttonProps={{ onClick: () => setPage("password") }}
-                />
-              </>
-            )}
-            {page === "name" && (
-              <>
-                <EditField
-                  label="Измение имени и фамилии"
-                  name="firstName"
-                  type="text"
-                  placeholder="Имя"
-                />
-                <EditField name="lastName" type="text" placeholder="Фамилия" />
-              </>
-            )}
-            {page === "email" && (
-              <EditField
-                label="Измение почты"
-                name="email"
-                type="text"
-                placeholder="Почта"
-              />
-            )}
-            {page === "photo" && (
-              <>
-                <label className={styles.label}>
-                  <h3 className={styles.label_text}>Загрузите новое фото</h3>
-                  <input
-                    id="file"
-                    name="file"
-                    type="file"
-                    onChange={(event) => {
-                      if (!event.target.files) {
-                        return;
-                      }
-                      let file = event.target.files[0];
-                      setPhoto(file);
-                    }}
+        <PopupHeader title="Настройки" />
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validate={validate}
+          validateOnMount={true}
+        >
+          <FormikForm>
+            <section className={styles.main_section}>
+              {page === "main" && (
+                <>
+                  <Button
+                    text="Изменить фото"
+                    buttonProps={{ onClick: () => setPage("photo") }}
                   />
-                </label>
-              </>
-            )}
-            {page === "password" && (
-              <EditField
-                label="Введите новый пароль"
-                placeholder="Новый пароль"
-                name="password"
-                type="password"
-              />
-            )}
-            {page === "confirm_password" && (
-              <EditField
-                label="Для изменения данных введите свой пароль"
-                placeholder="Ваш пароль"
-                name="confirmPassword"
-                type="password"
-              />
-            )}
-          </section>
-          <section className={styles.bottom_section}>
-            <div className={styles.errors_messages}>
-              <ErrorMessage name="firstName" component="p" />
-              <ErrorMessage name="email" component="p" />
-              <ErrorMessage name="password" component="p" />
-              <ErrorMessage name="lastName" component="p" />
-              <ErrorMessage name="confirmPassword" component="p" />
-              {error && <p>{error}</p>}
-            </div>
-            {page !== "main" && (
-              <div className={styles.save_button}>
-                <MainButton type="medium" buttonProps={{ type: "submit" }} loading={status === 'loading'}>
-                  Сохранить изменения
-                </MainButton>
+                  <Button
+                    text="Изменить имя и фамилию"
+                    buttonProps={{ onClick: () => setPage("name") }}
+                  />
+                  <Button
+                    text="Изменить почту"
+                    buttonProps={{ onClick: () => setPage("email") }}
+                  />
+                  <Button
+                    text="Изменить пароль"
+                    buttonProps={{ onClick: () => setPage("password") }}
+                  />
+                </>
+              )}
+              {page === "name" && (
+                <>
+                  <EditField
+                    label="Измение имени и фамилии"
+                    name="firstName"
+                    type="text"
+                    placeholder="Имя"
+                  />
+                  <EditField
+                    name="lastName"
+                    type="text"
+                    placeholder="Фамилия"
+                  />
+                </>
+              )}
+              {page === "email" && (
+                <EditField
+                  label="Измение почты"
+                  name="email"
+                  type="text"
+                  placeholder="Почта"
+                />
+              )}
+              {page === "photo" && (
+                <>
+                  <label className={styles.label}>
+                    <h3 className={styles.label_text}>Загрузите новое фото</h3>
+                    <input
+                      id="file"
+                      name="file"
+                      type="file"
+                      onChange={(event) => {
+                        if (!event.target.files) {
+                          return;
+                        }
+                        let file = event.target.files[0];
+                        setPhoto(file);
+                      }}
+                    />
+                  </label>
+                </>
+              )}
+              {page === "password" && (
+                <EditField
+                  label="Введите новый пароль"
+                  placeholder="Новый пароль"
+                  name="password"
+                  type="password"
+                />
+              )}
+              {page === "confirm_password" && (
+                <EditField
+                  label="Для изменения данных введите свой пароль"
+                  placeholder="Ваш пароль"
+                  name="confirmPassword"
+                  type="password"
+                />
+              )}
+            </section>
+            <section className={styles.bottom_section}>
+              <div className={styles.errors_messages}>
+                <ErrorMessage name="firstName" component="p" />
+                <ErrorMessage name="email" component="p" />
+                <ErrorMessage name="password" component="p" />
+                <ErrorMessage name="lastName" component="p" />
+                <ErrorMessage name="confirmPassword" component="p" />
+                {error && <p>{error}</p>}
               </div>
+              {page !== "main" && (
+                <div className={styles.save_button}>
+                  <MainButton
+                    type="medium"
+                    buttonProps={{ type: "submit" }}
+                    loading={status === "loading"}
+                  >
+                    Сохранить изменения
+                  </MainButton>
+                </div>
+              )}
+            </section>
+            {page === "main" && (
+              <p
+                onClick={() => dispatch(unregister())}
+                className={styles.logout_button}
+              >
+                Выйти
+              </p>
             )}
-          </section>
-          {page === "main" && (
-            <p
-              onClick={() => dispatch(unregister())}
-              className={styles.logout_button}
-            >
-              Выйти
-            </p>
-          )}
-        </FormikForm>
-      </Formik>
+          </FormikForm>
+        </Formik>
+      </ResponsePopup>
     </div>
   );
 };

@@ -13,7 +13,7 @@ export const Paginator = (props: {
   return (
     <div className={styles.container}>
       {pages.map((page) => (
-        <div
+        <div key={page}
           onClick={() => props.setCurrentPage(page - 1)}
           className={classNames(styles.page, {
             [styles.active_page]: props.currentPage === page - 1,

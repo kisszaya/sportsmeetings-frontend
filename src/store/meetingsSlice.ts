@@ -13,6 +13,10 @@ import {
 interface Meetings {
   status: "loading" | "idle" | "resolved" | "rejected";
   error: string | undefined | null;
+  createMeeting: {
+    status: "loading" | "idle" | "resolved" | "rejected";
+    error: string | undefined | null;
+  };
   allMeetings: {
     status: "loading" | "idle" | "resolved" | "rejected";
     error: string | undefined | null;
@@ -305,6 +309,10 @@ export const getRequestsByMeetingId = createAsyncThunk<
 const initialState: Meetings = {
   status: "idle",
   error: null,
+  createMeeting: {
+    status: "idle",
+    error: null,
+  },
   allMeetings: {
     status: "idle",
     error: null,
@@ -419,16 +427,16 @@ const meetingsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createNewMeeting.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
+      state.createMeeting.status = "loading";
+      state.createMeeting.error = null;
     });
     builder.addCase(createNewMeeting.fulfilled, (state) => {
-      state.status = "resolved";
-      state.error = null;
+      state.createMeeting.status = "resolved";
+      state.createMeeting.error = null;
     });
     builder.addCase(createNewMeeting.rejected, (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload?.message;
+      state.createMeeting.status = "rejected";
+      state.createMeeting.error = action.payload?.message;
     });
     builder.addCase(getMyAttendedMeetings.pending, (state) => {
       state.myAttendedMeetings.status = "loading";

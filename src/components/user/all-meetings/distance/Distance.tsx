@@ -1,5 +1,4 @@
 import Slider from "antd/lib/slider";
-import 'antd/lib/slider/style/css'
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";

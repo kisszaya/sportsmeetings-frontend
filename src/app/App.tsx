@@ -5,13 +5,13 @@ import {
   Routes,
 } from "react-router-dom";
 import { generalRoutes, userRoutes, adminRoutes } from "components/connector";
-
-import styles from "./App.module.scss";
 import {useDispatch, useSelector} from "react-redux";
 import { initialize } from "store/authSlice";
 import { PopupProvider } from "elements/service/popup/Popup";
 import {RootState} from "store";
 import {Loading} from "components/general";
+
+import styles from "./App.module.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const App = () => {
               (route, index) => (
                 <Route
                   element={
-                    <Suspense fallback={<h1>Loading...</h1>}>
+                    <Suspense fallback={<Loading/>}>
                       {route.element}
                     </Suspense>
                   }

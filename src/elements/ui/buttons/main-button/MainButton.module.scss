@@ -33,6 +33,18 @@
   background: var(--auth-input-border-focus);
 }
 
-//.green {
-//  background: var(--auth-dark-green);
-//}
+.loading {
+  cursor: default;
+  background: var(--auth-blue);
+
+  &:hover {
+    background: var(--auth-blue);
+  }
+}
+
+.spinSVG{
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}

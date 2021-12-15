@@ -53,7 +53,7 @@ const FinishedCreatedMeetings = () => {
         <section className={styles.data_section}>
           {finishedData.data &&
             finishedData.data.meetings.map((meeting) => (
-              <MeetingItem meeting={meeting} status="FINISHED" isMine={true} />
+              <MeetingItem meeting={meeting} status="FINISHED" isMine={true} key={meeting.id}/>
             ))}
         </section>
         {finishedData.data.totalPage !== 1 && (

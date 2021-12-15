@@ -5,9 +5,9 @@ import { userInfo } from "../store/ProfileSlice";
 import { getMeetingByIdType } from "../types/MeetingTypes";
 import { NavLink } from "react-router-dom";
 import DefaultPhotoPNG from "./media/defaultPhoto.png";
-import meetingsAPI from "../api/meetingsAPI";
 import { getRequestsByMeetingId } from "../store/meetingsSlice";
-import { Loading } from "../components/general";
+import { Loading } from "components/general";
+import { RequestsText } from "./EndingsFunctions";
 
 export const GetConvertedTime = (props: { text: string }) => {
   const elements = props.text.split(" / ");
@@ -36,10 +36,13 @@ export const getAddressFromLatLng = async (
   );
   if (response) {
     const result = await response.json();
-    if (result.results[0].address_components[0]?.short_name && result.results[0].address_components[1]?.short_name && result.results[0].address_components[2]?.short_name)
-    return `${result.results[0].address_components[0]?.short_name}, ${result.results[0].address_components[1]?.short_name}, ${result.results[0].address_components[2]?.short_name}`
-    else
-      return result.results[0].formatted_address
+    if (
+      result.results[0].address_components[0]?.short_name &&
+      result.results[0].address_components[1]?.short_name &&
+      result.results[0].address_components[2]?.short_name
+    )
+      return `${result.results[0].address_components[0]?.short_name}, ${result.results[0].address_components[1]?.short_name}, ${result.results[0].address_components[2]?.short_name}`;
+    else return result.results[0].formatted_address;
   } else {
     return "Нельзя определить геолокацию";
   }
@@ -82,23 +85,14 @@ export const GetRequestsNumberByMeetingId = (props: { meetingId: number }) => {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("inEff");
     if (!data.find((meeting) => meeting.meetingId === props.meetingId))
       dispatch(getRequestsByMeetingId(props.meetingId));
   }, [props.meetingId, data]);
-  console.log("data", data);
   const requests = data.find(
     (meeting) => meeting.meetingId === props.meetingId
   );
-  if (data && requests)
-    return (
-      <>
-        {requests?.data?.requests.length === 0 && <>Нет заявок</>}
-        {requests?.data!.requests.length > 0 && (
-          <>{`Заявок: ${requests?.data!.requests.length}`}</>
-        )}
-      </>
-    );
+  if (data && requests && requests?.data)
+    return <>{RequestsText(requests?.data?.requests.length)}</>;
   else {
     return <Loading />;
   }
@@ -126,7 +120,12 @@ export const GetPhotoByUserId = (props: { userId: number }) => {
   img.onerror = function () {
     setResultSrc(null);
   };
-  if (resultSrc === "loading") return <p>Loading</p>;
+  if (resultSrc === "loading")
+    return (
+      <div style={{ width: "136px", height: "136px" }}>
+        <Loading />
+      </div>
+    );
   else if (resultSrc === null)
     return <img src={DefaultPhotoPNG} alt="default avatar" />;
   else return <img src={resultSrc} alt="profile avatar" />;
