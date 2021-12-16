@@ -114,8 +114,7 @@ const CreateMeeting = () => {
       values.description &&
       values.maxNumbOfParticipants &&
       values.categoryId &&
-      values.hourOfDay!==null &&
-      values.minute!==null
+      values.hourOfDay && values.minute
     ) {
       result = {
         categoryId: Number(values.categoryId),
@@ -123,8 +122,8 @@ const CreateMeeting = () => {
         endDate: ConvertedEndDate(
           Number(values.dayOfMonth),
           Number(values.month),
-          Number(values.hourOfDay),
-          Number(values.minute),
+          Number(values.hourOfDay) - 1,
+          Number(values.minute)  - 1,
           Number(values.meetingDurationMinutes)
         ),
         latitude: values.coordinates.lat,
@@ -132,8 +131,8 @@ const CreateMeeting = () => {
         maxNumbOfParticipants: values.maxNumbOfParticipants,
         startDate: {
           dayOfMonth: values.dayOfMonth,
-          hourOfDay: values.hourOfDay,
-          minute: values.minute,
+          hourOfDay: Number(values.hourOfDay) - 1,
+          minute: Number(values.minute) - 1,
           month: Number(values.month) + 1,
           timeZoneOffset: TimeZone(),
         },
@@ -210,7 +209,7 @@ const CreateMeeting = () => {
                     name="hourOfDay"
                     placeholder="Часы"
                     listItems={Hours().map((hour) => ({
-                      id: hour,
+                      id: hour + 1,
                       displayText: hour,
                     }))}
                   />
@@ -220,7 +219,7 @@ const CreateMeeting = () => {
                     name="minute"
                     placeholder="Минуты"
                     listItems={Minutes().map((min) => ({
-                      id: min,
+                      id: min + 1,
                       displayText: min,
                     }))}
                   />
