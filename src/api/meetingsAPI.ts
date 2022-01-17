@@ -10,7 +10,7 @@ import {
 } from "types/MeetingTypes";
 
 const instance = axios.create({
-  baseURL: "https://api.sportsmeetings.daniilkaranov.ru/meetings",
+  baseURL: "https://itmo-backend-project.herokuapp.com/meetings",
 });
 
 const userAPI = {

@@ -131,7 +131,6 @@ export const getAllMeetings = createAsyncThunk<
           allMeetingsData.userLongitude
         );
       } else {
-        console.log("ci", categoryIds);
         response = await meetingsAPI.getAllMeetings(
           token as string,
           currentPage,
@@ -142,7 +141,6 @@ export const getAllMeetings = createAsyncThunk<
         );
       }
       if (response.status === 200) {
-        console.log("in response 200", response.data.meetings.length);
         dispatch(setAllMeetingsTotalPage(response.data.totalPage));
         dispatch(setAllMeetings(response.data.meetings));
         return;

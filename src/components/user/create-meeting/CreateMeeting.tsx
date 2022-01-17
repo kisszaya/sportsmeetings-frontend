@@ -49,6 +49,8 @@ const CreateMeeting = () => {
     (state: RootState) => state.meetings.createMeeting
   );
 
+  console.log('categories', categories);
+
   // Navigate after submit
   const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ const CreateMeeting = () => {
       errors.description = "Необходимо ввести описание к встрече";
     if (description && description.length > 256)
       errors.description = "Слишком длинное описание :(";
-    if (!month) errors.month = "Необходимо указать месяц встречи";
+    if (month === null) errors.month = "Необходимо указать месяц встречи";
     if (!dayOfMonth && month)
       errors.dayOfMonth = "Необходимо указать день встречи";
     if ((!hourOfDay || !minute) && month && dayOfMonth)
@@ -104,12 +106,13 @@ const CreateMeeting = () => {
 
   // OnSubmit
   const onSubmit = async (values: FormValues) => {
+    console.log(values)
     let result: CreateMeetingType;
     if (
       values.coordinates.lng &&
       values.coordinates.lat &&
       values.meetingDurationMinutes &&
-      values.month &&
+      values.month!==null &&
       values.dayOfMonth &&
       values.description &&
       values.maxNumbOfParticipants &&
@@ -189,7 +192,7 @@ const CreateMeeting = () => {
                   displayText: month.name,
                 }))}
               />
-              {values.month && (
+              {values.month!==null && (
                 <FormikField
                   divProps={{ className: styles.time_dropdown }}
                   component={DropdownFormik}
@@ -260,7 +263,7 @@ const CreateMeeting = () => {
               <MainButton
                 buttonProps={{ type: "submit" }}
                 type="medium"
-                disabled={isSubmitting || !isValid}
+                // disabled={isSubmitting || !isValid}
                 loading={status === "loading"}
               >
                 Создать встречу

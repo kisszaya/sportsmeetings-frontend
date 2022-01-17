@@ -1,7 +1,18 @@
 import { UserWrapper } from "elements/ui";
-import { FC, useCallback, useEffect, useState } from "react";
+import {
+  FC,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMeetings, getCoordinates } from "store/meetingsSlice";
+import {
+  getAllMeetings,
+  getCoordinates,
+  setAllMeetings,
+} from "store/meetingsSlice";
 import { RootState } from "store";
 import { MeetingItem } from "./meeting-item/MeetingItem";
 import { Categories } from "./categories/Categories";
@@ -12,17 +23,31 @@ import "antd/lib/slider/style/css";
 import styles from "./AllMeetings.module.scss";
 
 const AllMeetings: FC = () => {
-  // State
-  const [currentPage, setCurrentPage] = useState(0);
-  const [distanceInKilometers, setDistanceInKilometers] = useState(1000);
-  const [categoryIds, setCategoryIds] = useState<null | number[]>(null);
-  const [fetching, setFetching] = useState(true);
-
   // Redux
   const dispatch = useDispatch();
   const { userLongitude, userLatitude, data, totalPage, error } = useSelector(
     (state: RootState) => state.meetings.allMeetings
   );
+
+  const memoizedValue = useMemo(() => true, []);
+  // useMemo(() => {
+  //
+  // }, [dispatch]);
+
+  // State
+  const [currentPage, setCurrentPage] = useState(0);
+  const [distanceInKilometers, setDistanceInKilometers] = useState(1000);
+  const [categoryIds, setCategoryIds] = useState<null | number[]>(null);
+  const [fetching, setFetching] = useState(memoizedValue);
+
+  useLayoutEffect(() => {
+    (async () => {
+      await dispatch(setAllMeetings(null));
+      setCurrentPage(0);
+    })();
+  }, [dispatch])
+
+  console.log('data', data)
 
   // Get user coordinates, then get all meetings
   useEffect(() => {
@@ -76,7 +101,7 @@ const AllMeetings: FC = () => {
         </div>
         {error && <p>{error}</p>}
         {data?.length === 0 && <p>Встреч не найдено</p>}
-        {!data && <Loading />}
+        {(!data || fetching )&& <Loading />}
         {data && (
           <div className={styles.meetings_container}>
             {data.map((meeting, index) => (

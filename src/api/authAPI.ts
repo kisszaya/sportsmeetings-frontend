@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://api.sportsmeetings.daniilkaranov.ru/auth/",
+  baseURL: "https://itmo-backend-project.herokuapp.com/auth/",
 });
 
 const authAPI = {

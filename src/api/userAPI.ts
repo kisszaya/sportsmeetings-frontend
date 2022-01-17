@@ -8,7 +8,7 @@ import {
 } from "../types/UsersTypes";
 
 const instance = axios.create({
-  baseURL: "https://api.sportsmeetings.daniilkaranov.ru/users/",
+  baseURL: "https://itmo-backend-project.herokuapp.com/users/",
 });
 
 const userAPI = {
